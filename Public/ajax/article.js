@@ -4,23 +4,27 @@ $(document).ready(function () {
         event.preventDefault();
         var statut = 1;
         var article = $("#article").val();;
-        var prix  = $("#prix").val();;
+        var prix  = $("#prix").val();
         var qte=0;
         var montant=0;
-        var idu = 13;
+        var iduser=$("#iduser").val();
         var stock=0;
           var cat = $("#cat").val();
-          var dateins = $("#dateins").val();
+          var fab = $("#fab").val();
+        var dateins = $("#dateins").val();
+        var expired = $("#expired").val();
           var cond = $("#cond").val();
           var statut = 1;
           $.ajax({
               url: "Public/script/addart.php",
               method: "POST",
               data: {
-                      idu : idu,
                       qte: qte,
+                      iduser:iduser,
                       cat : cat,
+                      fab:fab,
                       dateins:dateins,
+                      expired:expired,
                       statut: statut,
                       article: article,
                       prix: prix,

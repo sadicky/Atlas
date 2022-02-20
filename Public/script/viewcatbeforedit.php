@@ -4,7 +4,8 @@ $db = getConnection();
 
 $Id = $_POST['Id'];
 $sql="SELECT * FROM tbl_categories WHERE ID='$Id'";
-
+$req=$db->query($sql);
+$d=$req->fetch();
 
 ?>
 <div>

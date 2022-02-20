@@ -3,39 +3,41 @@ include 'public/includes/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-     <link rel="shortcut icon" href="public/Images/logo.png" type="image/x-icon"> 
-    <meta name="description" content="Atlas">
-    <meta name="author" content="SpaceLine">
 
-        <!-- Bootstrap Core CSS -->
-        <link href="plugins/css/bootstrap.min.css" rel="stylesheet">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="public/Images/logo.png" type="image/x-icon">
+  <meta name="description" content="Atlas">
+  <meta name="author" content="SpaceLine">
 
-        <!-- MetisMenu CSS -->
-        <link href="plugins/css/metisMenu.min.css" rel="stylesheet">
+  <!-- Bootstrap Core CSS -->
+  <link href="plugins/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Timeline CSS -->
-        <link href="plugins/css/timeline.css" rel="stylesheet">
+  <!-- MetisMenu CSS -->
+  <link href="plugins/css/metisMenu.min.css" rel="stylesheet">
 
-        <!-- Custom CSS -->
-        <link href="plugins/css/startmin.css" rel="stylesheet">
+  <!-- Timeline CSS -->
+  <link href="plugins/css/timeline.css" rel="stylesheet">
 
-        <!-- Morris Charts CSS -->
-        <link href="plugins/css/morris.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="plugins/css/startmin.css" rel="stylesheet">
 
-        <!-- Custom Fonts -->
-        <link href="plugins/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Morris Charts CSS -->
+  <link href="plugins/css/morris.css" rel="stylesheet">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
+  <!-- Custom Fonts -->
+  <link href="plugins/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-    </head>
+</head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
 
@@ -52,18 +54,55 @@ include 'public/includes/header.php';
     <div id="wrapper">
 
       <!-- Navigation -->
-      <?php 
-        include 'public/includes/navbar.php';
+      <?php
+      include 'public/includes/navbar.php';
       ?>
 
       <div id="page-wrapper">
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-12">
-              <h1 class="page-header"><?=$title?></h1>
+              <h1 class="page-header"><?= $title ?></h1>
             </div>
             <!-- /.col-lg-12 -->
           </div>
+          <?php
+          require_once('Model/Admin/connexion.php');
+          $db = getConnection();
+          $tdate = date('Y-m-d');
+          $sql = "select sum(MTOTAL)  as TOTAL from tbl_vente WHERE DATEV='$tdate';";
+          $req = $db->query($sql);
+          $req->execute();
+          $g = $req->fetch(PDO::FETCH_OBJ);
+          $sum_today = $g->TOTAL;
+
+          //NOMBRE D'ARTICLES
+          $sql1 = "select count(ARTICLE)  as TOTAL from tbl_articles";
+          $req1 = $db->query($sql1);
+          $req1->execute();
+          $g1 = $req1->fetch(PDO::FETCH_OBJ);
+          $article = $g1->TOTAL;
+
+          //NOMBRE PRODUITS EXPIRES          
+          $drug_expiry_date = date("Y-m-d", strtotime(date("Y-m-d")));
+          $query = $db->query("SELECT count(PEREMPTION) as EXPIRY FROM tbl_articles WHERE PEREMPTION < '$drug_expiry_date' AND DATECREAT !='0000-00-00'");
+          $g2 = $query->fetch(PDO::FETCH_OBJ);
+          $expiry = $g2->EXPIRY;
+
+          //NOMBRE ARTICLES EPUISÉS
+          $sql3 = "select count(ARTICLE)  as EPUISE from tbl_articles WHERE QTE='0' AND DATECREAT !='0000-00-00'";
+          $req3 = $db->query($sql3);
+          $req3->execute();
+          $g3 = $req3->fetch(PDO::FETCH_OBJ);
+          $epuise = $g3->EPUISE;
+
+          //ARTICLES EPUISÉS
+          $sql4 = "select * from tbl_articles WHERE QTE='0' AND DATECREAT !='0000-00-00' LIMIT 5";
+          $req4 = $db->query($sql4);
+          $req4->execute();
+          $epuises = $req4->fetchAll(PDO::FETCH_OBJ);
+
+          ?>
           <!-- /.row -->
           <div class="row">
             <div class="col-lg-3 col-md-6">
@@ -74,14 +113,14 @@ include 'public/includes/header.php';
                       <i class="fa fa-money fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                      <div class="huge">26$</div>
-                      <div>Ventes</div>
+                      <div class="huge"><?= $sum_today ?></div>
+                      <div>Ventes Aujourd'hui</div>
                     </div>
                   </div>
                 </div>
-                <a href="#">
+                <a href="index.php?page=caisse">
                   <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">Voir plus</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
                     <div class="clearfix"></div>
@@ -97,14 +136,14 @@ include 'public/includes/header.php';
                       <i class="fa fa-tasks fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                      <div class="huge">0</div>
-                      <div>Epuisé</div>
+                      <div class="huge"><?= $epuise ?></div>
+                      <div>Epuisés</div>
                     </div>
                   </div>
                 </div>
-                <a href="#">
+                <a href="index.php?page=epuise">
                   <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">Voir toutes</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
                     <div class="clearfix"></div>
@@ -120,14 +159,14 @@ include 'public/includes/header.php';
                       <i class="fa fa-shopping-cart fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                      <div class="huge">124</div>
+                      <div class="huge"><?= $article ?></div>
                       <div>Articles</div>
                     </div>
                   </div>
                 </div>
-                <a href="#">
+                <a href="index.php?page=articles">
                   <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">Voir plus</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
                     <div class="clearfix"></div>
@@ -143,14 +182,14 @@ include 'public/includes/header.php';
                       <i class="fa fa-warning fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                      <div class="huge">13</div>
-                      <div>Expiré</div>
+                      <div class="huge"><?= $expiry ?></div>
+                      <div>Expirés</div>
                     </div>
                   </div>
                 </div>
-                <a href="#">
+                <a href="index.php?page=expired">
                   <div class="panel-footer">
-                    <span class="pull-left">View Details</span>
+                    <span class="pull-left">Voir toutes</span>
                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 
                     <div class="clearfix"></div>
@@ -171,90 +210,108 @@ include 'public/includes/header.php';
                     <div class="col-lg-12">
                       <div class="panel panel-default">
                         <div class="panel-heading">
-                          Statistique
+                          Les 10 derniers vente
                         </div>
                         <!-- /.panel-heading -->
-                        <div class="panel-body">                          
-                        <div class="flot-chart">
-                                        <div class="flot-chart-content" id="flot-line-chart"></div>
-                                    </div>
+                        <div class="panel-body">
+
+                          <div class="table-responsive">
+                            <table class="table table-condensed table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Total</th>
+                                  <th>Payé</th>
+                                  <th>Reste</th>
+                                  <th>Statut Paiement</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php $cnt = 1;
+                                foreach ($getVente as $vente) :  ?>
+                                  <tr class="odd gradeX">
+                                    <td align="center"><b>FACT000<?= $vente->ID ?></b></td>
+                                    <td><?= $vente->MTOTAL ?></td>
+                                    <td><?= $vente->PAYE ?></td>
+                                    <td><?= $vente->RESTE ?></td>
+                                    <td><?php // active 
+                                        if ($vente->STATUTV == 'totalite') {
+                                          echo "<label class='label label-success'>Totalité</label>";
+                                        } else if ($vente->STATUTV == 'partiel') {
+                                          echo "<label class='label label-info'>Partiel</label>";
+                                        } else {
+                                          echo "<label class='label label-danger'>No Payment</label>";
+                                        } ?>
+                                    </td>
+                                  </tr>
+                                <?php $cnt++;
+                                endforeach ?>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
-                        <!-- /.panel-body -->
                       </div>
-                      <!-- /.panel -->
+                      <!-- /.panel-body -->
                     </div>
-                    <!-- /.col-lg-12 -->
+                    <!-- /.panel -->
                   </div>
+                  <!-- /.col-lg-12 -->
+                </div>
 
-                </div>
-                <!-- /.panel-body -->
               </div>
-              <!-- /.panel -->
+              <!-- /.panel-body -->
             </div>
-            <!-- /.col-lg-8 -->
-            <div class="col-lg-4">
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <i class="fa fa-bell fa-fw"></i> Epuisé
-                </div>
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                  <div class="list-group">
+          <!-- /.col-lg-8 -->
+          <div class="col-lg-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <i class="fa fa-bell fa-fw"></i> Epuisés
+              </div>
+              <!-- /.panel-heading -->
+              <div class="panel-body">
+                <div class="list-group">
+                  <?php foreach ($epuises as $e) : ?>
                     <a href="#" class="list-group-item">
-                      <i class="fa fa-envelope fa-fw"></i> Message Sent
-                      <span class="pull-right text-muted small"><em>27 minutes ago</em>
+                      <i class="fa fa-cart fa-fw"></i><b><?= $e->ARTICLE ?></b>
+                      <span class="pull-right text-muted small"><em>Prix: <?= $e->PRIX ?></em>
                       </span>
                     </a>
-                    <a href="#" class="list-group-item">
-                      <i class="fa fa-tasks fa-fw"></i> New Task
-                      <span class="pull-right text-muted small"><em>43 minutes ago</em>
-                      </span>
-                    </a>
-                  </div>
-                  <!-- /.list-group -->
-                  <a href="#" class="btn btn-default btn-block">View All Alerts</a>
+                  <?php endforeach ?>
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.list-group -->
+                <a href="index.php?page=expired" class="btn btn-default btn-block">Tous les produits expirés</a>
               </div>
+              <!-- /.panel-body -->
             </div>
-            <!-- /.col-lg-4 -->
           </div>
-          <!-- /.row -->
+          <!-- /.col-lg-4 -->
         </div>
-        <!-- /.container-fluid -->
+        <!-- /.row -->
       </div>
-      <!-- /#page-wrapper -->
-
+      <!-- /.container-fluid -->
     </div>
+    <!-- /#page-wrapper -->
 
-   <!-- ./wrapper -->
+  </div>
 
-        <!-- jQuery -->
-        <script src="plugins/js/jquery.min.js"></script>
+  <!-- ./wrapper -->
 
-        <!-- Bootstrap Core JavaScript -->
-        <script src="plugins/js/bootstrap.min.js"></script>
+  <!-- jQuery -->
+  <script src="plugins/js/jquery.min.js"></script>
 
-        <!-- Metis Menu Plugin JavaScript -->
-        <script src="plugins/js/metisMenu.min.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="plugins/js/bootstrap.min.js"></script>
 
-        
-        <!-- DataTables JavaScript -->
-        <script src="plugins/js/dataTables/jquery.dataTables.min.js"></script>
-        <script src="plugins/js/dataTables/dataTables.bootstrap.min.js"></script>
+  <!-- Metis Menu Plugin JavaScript -->
+  <script src="plugins/js/metisMenu.min.js"></script>
 
-        <!-- Custom Theme JavaScript -->
-        <script src="plugins/js/startmin.js"></script>
 
-        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-        <script>
-            $(document).ready(function() {
-                $('#dataTables-example').DataTable({
-                        responsive: true
-                });
-            });
-        </script>
+  <!-- DataTables JavaScript -->
+  <script src="plugins/js/dataTables/jquery.dataTables.min.js"></script>
+  <script src="plugins/js/dataTables/dataTables.bootstrap.min.js"></script>
 
+  <!-- Custom Theme JavaScript -->
+  <script src="plugins/js/startmin.js"></script>
 </body>
 
 </html>

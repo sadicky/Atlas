@@ -76,11 +76,16 @@ $cats = $cat->getCategories();
                                     <div class="panel-heading">
                                         Les Catégories
                                         <div class="pull-right"> 
-                                            <button  data-toggle="modal" data-target="#ajoutcat" class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Nouvelle</button>
-                                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Exporter PDF</button>
-                                            <button class="btn btn-primary btn-xs"><i class="fa fa-file-excel-o fa-fw"></i> Exporter Excel</button>
-                                            <button class="btn btn-default btn-xs"><i class="fa fa-download fa-fw"></i> Importer</button>
-                                        </div>
+                                            <?php
+                                            if (isset($_SESSION['TYPE'])) {
+                                             $type = $_SESSION['TYPE'];
+                                             if ($type=="admin") { ?>
+                                                 <button  data-toggle="modal" data-target="#ajoutcat" class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Nouvelle</button>
+                                        <?php     }
+                                            }
+                                             ?>
+                                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
+                                            
                                     </div>
                                     <!-- /.panel-heading -->
                                     <div class="panel-body">
@@ -88,26 +93,49 @@ $cats = $cat->getCategories();
                                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
                                                     <tr>
-                                                        <th><center>#</center></th>
+                                                     <?php
+                                                       if (isset($_SESSION['TYPE'])) {
+                                                        $type = $_SESSION['TYPE'];
+                                                        if ($type=="admin") { ?>
+                                                          <th><center>#</center></th>
                                                         <th><center>Catégories</center></th>
                                                         <th><center>Date de Création</center></th>
+                                                        <th><center>Etat</center></th>
                                                         <th><center>Activer/Desactiver</center></th>
                                                         <th><center>Actions</center></th>
+                                                      <?php    }else{ ?>
+                                                         <th><center>#</center></th>
+                                                        <th><center>Catégories</center></th>
+                                                        <th><center>Date de Création</center></th>
+                                                     <?php }
+                                                                        }
+                                                                        ?>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php $cnt=1; foreach($cats as $cat):?>
+                                                    <?php
+                                            if (isset($_SESSION['TYPE'])) {
+                                             $type = $_SESSION['TYPE'];
+                                             if ($type=="admin") { ?>
+                                                <?php $cnt=1; foreach($cats as $cat):?>
                                                     <tr class="odd gradeX">
                                                         <td><center><?=$cnt?></center></td>
                                                         <td><center><b><?=$cat->CATEGORIE?></b></center></td>
                                                         <td><center><?=$cat->CREATEDAT?></center></td>
                                                         <?php 
-                                                        if($cat->STATUT == 0){
-                                                        echo "<td><button type='button'  id='".$cat->ID."' name='activer' class='btn btn-xs btn-block btn-default activer' ><span class='glyphicon glyphicon-ok' ></span> Activer?</button></td>";
+                                                        if ($cat->STATUT == 0) {
+                                                            echo "<td> <span class='label label-danger'> Desactiver</span></td>";
                                                         } else {
-                                                            echo "<td>  <button type='button'  id='".$cat->ID."' name='desactiver' class='btn btn-xs btn-block btn-default desactiver'><span class='glyphicon glyphicon-remove' ></span> Desactiver?</button>
-                                                            </td>";}
-                                                            ?>
+                                                            echo "<td> <span class='label label-info'> Activer</span></td>";
+                                                        }
+                                                        if($cat->STATUT == 0){
+                                                        echo "<td><button type='button'  id='".$cat->ID."' name='activer' class='btn btn-xs btn-block btn-default activers'><span class='glyphicon glyphicon-ok' ></span> Activer?</button></td>";
+                                                        } else {
+                                                            echo "<td>  
+                                                            <button type='button'  id='".$cat->ID."' name='desactiver' class='btn btn-xs btn-block btn-default desactivers'><span class='glyphicon glyphicon-remove' ></span> Desactiver?</button>
+                                                            </td>";
+                                                        }
+                                                        ?>
                                                         <td class="center">
                                                         <button 
                                                           class='btn btn-info btn-xs btn-block view_data' 
@@ -117,6 +145,22 @@ $cats = $cat->getCategories();
                                                          </td>
                                                     </tr>
                                                     <?php $cnt++; endforeach ?>
+
+                                        <?php  }else{ ?>
+                                               <?php $cnt=1; foreach($cats as $cat):?>
+                                                    <tr class="odd gradeX">
+                                                        <td><center><?=$cnt?></center></td>
+                                                        <td><center><b><?=$cat->CATEGORIE?></b></center></td>
+                                                        <td><center><?=$cat->CREATEDAT?></center></td>
+                                                       
+                                                    </tr>
+                                                    <?php $cnt++; endforeach ?>
+                                        <?php }
+                                            }
+                                             ?>
+
+
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
@@ -196,6 +240,49 @@ $(document).on('click','.submitb',function(){
 });
     return false;
 }); 
+
+//
+$(document).on("click", ".desactivers", function (event) {
+        event.preventDefault();
+          var id = $(this).attr("id");
+          if (confirm("Voulez-vous desactiver cet article ? ")) {
+            $.ajax({
+              url: "Public/script/desactivcat.php",
+              method: "POST",
+              data: {
+                id: id
+              },
+              success: function (data) {
+              }
+            });
+          } else {
+            return false;
+          }
+        });
+       
+        $(document).on("click", ".activers", function (event) {
+          event.preventDefault();
+            var id = $(this).attr("id");
+            if (confirm("Voulez-vous activer cet article? ")) {
+              $.ajax({
+                url: "Public/script/activcat.php",
+                method: "POST",
+                data: {
+                  id: id
+                },
+                success: function (data) {
+                }
+              });
+            } else {
+              return false;
+            }
+          });
+       
+
+
+
+
+
 
 });
 </script>

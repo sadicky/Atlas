@@ -10,7 +10,7 @@
       <form method="post" id="formulaire"  enctype="multipart/form-data">
       	<div class="row">
       		<div class="col-sm-6">
-      			<div class="form-group">      				
+      			<div class="form-group">       				
       				<b><label>Noms : </label> <span class="text-danger">*</span></b>
       				<input type="text" class="form-control" placeholder="noms" name="name" id="name" required>
       			</div>
@@ -19,9 +19,9 @@
                       <select name="type" class="form-control" id="type" required>
                         <option selected disabled>Selectionner le type</option>
                         <option value="admin">Admin</option>
-                        <option value="caissier">Caissier</option>
                         <option value="gestionnaire de dépôt">Gestionnaire</option>
-                        <option value="facturier">Facturier</option>
+                        <option value="magasinier">Magasinier</option>
+                        <option value="quincaillerier">Quincaillerier</option>
                       </select>
 					 </div>
       		</div>

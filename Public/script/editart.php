@@ -31,8 +31,12 @@ if(empty($_POST['Id'])){
 
 	$sql1="SELECT tbl_articles.ID as ID,tbl_articles.ARTICLE as ARTICLE FROM tbl_categories,tbl_articles WHERE tbl_articles.IDCAT=tbl_categories.ID AND tbl_articles.ID='$Id' ";
 	$sql2="UPDATE tbl_articles SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?";
+	$sql3="UPDATE tbl_stockm SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?";
+	$sql4="UPDATE tbl_stockq SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?";
 	$req1=$db->query($sql1);
 	$req2=$db->prepare($sql2);
+	$req3=$db->prepare($sql3);
+	$req4=$db->prepare($sql4);
 	$data1 = $req1->fetch();
 	if(empty($data1)){
 	  echo '
@@ -40,9 +44,11 @@ if(empty($_POST['Id'])){
 	  ';
 	}else{
 	  $data2 = $req2->execute(array($article,$prix,$cond,$cat,$Id));
-	  if ($data2) {
+	  $data3 = $req3->execute(array($article,$prix,$cond,$cat,$Id));
+	  $data4 = $req4->execute(array($article,$prix,$cond,$cat,$Id));
+	  if ($data2 && $data3 && $data4) {
 		echo "
-		<strong style='color: green;'>Succes:</strong>  l'articele ".$data1['ARTICLE']." est modifiee avec succes .
+		<strong style='color: green;'>Succes:</strong>  l'articele ".$data1['ARTICLE']." est modifié par <strong>".$article."</strong> avec succes .
 		";
 	  }else{
 		echo '

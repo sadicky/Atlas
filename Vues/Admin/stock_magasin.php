@@ -70,9 +70,16 @@
                                     <div class="panel-heading">
                                         Les Catégories
                         <div class="pull-right"> 
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Exporter PDF</button>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-file-excel-o fa-fw"></i> Exporter Excel</button>
-                            <button class="btn btn-default btn-xs"><i class="fa fa-download fa-fw"></i> Importer</button>
+                            <?php 
+                             if (isset($_SESSION['TYPE'])) {
+                                 $type=$_SESSION['TYPE'];
+                                 if ($type=="admin" OR $type=="magasinier") { ?>
+                                     <a href='index.php?page=orderm&o=add' class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Vente</a>
+                               <?php  }
+                             }
+                             ?>
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
+                            
                         </div>
                                     </div>
                                     <!-- /.panel-heading -->
@@ -81,17 +88,34 @@
                                             <table class="table table-striped table-bordered  table-hover" id="dataTables-example">
                                                 <thead>
                                                     <tr >
+                                                        <?php 
+                                                        if (isset($_SESSION['TYPE'])) {
+                                                            $type=$_SESSION['TYPE'];
+                                                            if ($type=="admin" OR $type=="magasinier") { ?>
                                                         <th>#</th>
                                                         <th>Articles</th>
                                                         <th>Stock Disponible</th>
                                                         <th>Prix</th>
                                                         <th>Montant</th>
                                                         <th>Recquisitioner</th>
-                                                        <th>Actions</th>
+                                                        <?php }else{ ?>
+                                                         <th>#</th>
+                                                        <th>Articles</th>
+                                                        <th>Stock Disponible</th>
+                                                        <th>Prix</th>
+                                                        <th>Montant</th>
+                                                        <?php }
+                                                        }
+
+                                                         ?>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php $cnt=1; foreach($getStock as $cat):?>
+                                                    <?php 
+                                                        if (isset($_SESSION['TYPE'])) {
+                                                            $type=$_SESSION['TYPE'];
+                                                            if ($type=="admin" OR $type=="magasinier") { ?>
+                                                           <?php $cnt=1; foreach($getStock as $cat):?>
                                                     <tr class="odd gradeX">
                                                         <td><?=$cnt?></td>
                                                         <td><b><?=$cat->ARTICLE?></b></td>
@@ -104,15 +128,30 @@
                                                         <td><?=$cat->PRIX?></td>
                                                         <td><?=$cat->PRIX*$cat->QTE?></td>
                                                         <td class="center">
-                                                            <a href='index.php?page=modadmin&id=$value->ID' type='submit' name='update' class='btn btn-xs btn-danger update' title='Recquisitionner'><i class='fa fa-cart-plus'></i> Recquisitionner</a>
+                                                        <a href='index.php?page=recquism&id=<?=$cat->ID?>' type='submit' name='update' class='btn btn-xs btn-danger update' title='Recquisitionner'><i class='fa fa-cart-plus'></i> Recquisitionner</a>
                                                          </td>
-                                                        <td class="center">
-                                                            <a href='index.php?page=modadmin&id=$value->ID' type='submit' name='update' class='btn btn-xs btn-info update' title='Modifier Admin'><span class='glyphicon glyphicon-edit'></span></a>
-                                                            <button type='button' name='delete' id='".$value->ID."' class='btn btn-xs btn-danger delete' title='Supprimer Admin'><span class='glyphicon glyphicon-trash'></span></button>
-
-                                                        </td>
                                                     </tr>
                                                     <?php $cnt++; endforeach ?>
+                                                        <?php }else{ ?>
+                                                          <?php $cnt=1; foreach($getStock as $cat):?>
+                                                    <tr class="odd gradeX">
+                                                        <td><?=$cnt?></td>
+                                                        <td><b><?=$cat->ARTICLE?></b></td>
+                                                        <?php
+                                                        if ($cat->QTE < 5) { ?>
+                                                            <td class=' alert alert-danger text-white text-bold bg-danger'><?= $cat->QTE ?></td>
+                                                        <?php } else { ?>
+                                                            <td class='text-bold'><?= $cat->QTE ?></td>
+                                                        <?php } ?>
+                                                        <td><?=$cat->PRIX?></td>
+                                                        <td><?=$cat->PRIX*$cat->QTE?></td>
+                                                    </tr>
+                                                    <?php $cnt++; endforeach ?>
+                                                        <?php }
+                                                        }
+
+                                                         ?>
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>

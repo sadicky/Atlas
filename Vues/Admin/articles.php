@@ -76,10 +76,17 @@ $arts = $art->getArticlesId();
                                     <div class="panel-heading">
                                         Les Articles
                         <div class="pull-right"> 
-                            <button data-toggle="modal" data-target="#ajoutart"  class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Nouvel</button>
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Exporter PDF</button>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-file-excel-o fa-fw"></i> Exporter Excel</button>
-                            <button class="btn btn-default btn-xs"><i class="fa fa-download fa-fw"></i> Importer</button>
+                              <?php
+                                            if (isset($_SESSION['TYPE'])) {
+                                             $type = $_SESSION['TYPE'];
+                                             if ($type=="admin") { ?>
+                                                 <button data-toggle="modal" data-target="#ajoutart"  class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Nouvel</button>
+                                        <?php     }
+                                            }
+                                             ?>
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
+                            
+                           
                         </div>
                                     </div>
                                     <!-- /.panel-heading -->
@@ -88,15 +95,69 @@ $arts = $art->getArticlesId();
                                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
                                                     <tr>
+                                            <?php
+                                            if (isset($_SESSION['TYPE'])) {
+                                             $type = $_SESSION['TYPE'];
+                                             if ($type=="admin") { ?>
+                                                 <th>#</th>
+                                                        <th>Articles</th>
+                                                        <th>Catégories</th>
+                                                        <th>Prix</th>
+                                                        <th>Quantité</th>
+                                                        <th>Peremption</th>
+                                                        <th>Etat</th>
+                                                        <th>Activ/Desact</th>
+                                                        <th>Actions</th>
+                                        <?php     }else{ ?>
                                                         <th>#</th>
                                                         <th>Articles</th>
                                                         <th>Catégories</th>
                                                         <th>Prix</th>
                                                         <th>Quantité</th>
-                                                        <th>Actions</th>
+                                                        <th>Peremption</th>
+                                       <?php }
+                                            }
+                                             ?>
+                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                     <?php
+                                            if (isset($_SESSION['TYPE'])) {
+                                             $type = $_SESSION['TYPE'];
+                                             if ($type=="admin") { ?>
+                                                  <?php $cnt=1; foreach($arts as $cat):?>
+                                                    <tr class="odd gradeX">
+                                                        <td><?=$cnt?></td>
+                                                        <td><b><?=$cat->ARTICLE?></b></td>
+                                                        <td><?=$cat->CATEGORIE?></td>
+                                                        <td><?=$cat->PRIX?></td>
+                                                        <td><?=$cat->QTE?></td>
+                                                        <td><?=$cat->PEREMPTION?></td>
+                                                        <?php
+                                                            if ($cat->STATUT == 0) {
+                                                                echo "<td> <span class='label label-danger'> Desactiver</span></td>";
+                                                            } else {
+                                                                echo "<td> <span class='label label-info'> Activer</span></td>";
+                                                            }
+                                                            if ($cat->STATUT == 0) {
+                                                                echo "<td><button type='button'  id='" . $cat->ID . "' name='activer' class='btn btn-xs btn-default activer' ><span class='glyphicon glyphicon-ok' ></span> Activer?</button></td>";
+                                                            } else {
+                                                                echo "<td>  <button type='button'  id='" . $cat->ID . "' name='desactiver' class='btn btn-xs btn-default desactiver'><span class='glyphicon glyphicon-remove' ></span> Desactiver?</button>
+                                                            </td>";
+                                                            }
+                                                            ?>
+                                                        <td class="center">
+                                                        <button 
+                                                          class='btn btn-info btn-xs btn-block view_data' 
+                                                          id="<?=$cat->ID?>" title='Modification'>
+                                                          <span class='glyphicon glyphicon-edit'></span>
+                                                          </button>
+
+                                                        </td>
+                                                    </tr>
+                                                    <?php $cnt++; endforeach ?>
+                                        <?php     }else{ ?>
                                                     <?php $cnt=1; foreach($arts as $cat):?>
                                                     <tr class="odd gradeX">
                                                         <td><?=$cnt?></td>
@@ -104,16 +165,14 @@ $arts = $art->getArticlesId();
                                                         <td><?=$cat->CATEGORIE?></td>
                                                         <td><?=$cat->PRIX?></td>
                                                         <td><?=$cat->QTE?></td>
-                                                        <td class="center">
-                                                        <button 
-                                                          class='btn btn-info btn-xs btn-block view_data' 
-                                                          id="<?=$cat->ARTID?>" title='Modification'>
-                                                          <span class='glyphicon glyphicon-edit'></span>
-                                                          </button>
-
-                                                        </td>
+                                                        <td><?=$cat->PEREMPTION?></td>
                                                     </tr>
                                                     <?php $cnt++; endforeach ?>
+                                      <?php  }
+                                            }
+                                             ?>
+
+                                                  
                                                 </tbody>
                                             </table>
                                         </div>
@@ -155,7 +214,7 @@ $arts = $art->getArticlesId();
             <script src="plugins/js/startmin.js"></script>
 
             <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-<script type="text/javascript" src="public/ajax/article.js"></script>
+<script type="text/javascript" src="Public/ajax/article.js"></script>
             
 </body>
 
@@ -193,7 +252,42 @@ $(document).on('click','.submitb',function(){
     return false;
 });
 
-
+//
+$(document).on("click", ".desactiver", function (event) {
+        event.preventDefault();
+          var id = $(this).attr("id");
+          if (confirm("Voulez-vous desactiver cet article ? ")) {
+            $.ajax({
+              url: "Public/script/desactivart.php",
+              method: "POST",
+              data: {
+                id: id
+              },
+              success: function (data) {
+              }
+            });
+          } else {
+            return false;
+          }
+        });
+       
+        $(document).on("click", ".activer", function (event) {
+          event.preventDefault();
+            var id = $(this).attr("id");
+            if (confirm("Voulez-vous activer cet article? ")) {
+              $.ajax({
+                url: "Public/script/activart.php",
+                method: "POST",
+                data: {
+                  id: id
+                },
+                success: function (data) {
+                }
+              });
+            } else {
+              return false;
+            }
+          });
 
 });
 </script>

@@ -1,3 +1,5 @@
+<?php 
+if (isset($_SESSION['logged'])) { ?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
           <a class="navbar-brand" href="index.php?page=home">Atlas</a>
@@ -11,45 +13,17 @@
         </button>
 
         <ul class="nav navbar-right navbar-top-links">
-          <li class="dropdown navbar-inverse">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu dropdown-alerts">
-             
-              <li>
-                <a href="#">
-                  <div>
-                    <i class="fa fa-tasks fa-fw"></i> New Task
-                    <span class="pull-right text-muted small">4 minutes ago</span>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <div>
-                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                    <span class="pull-right text-muted small">4 minutes ago</span>
-                  </div>
-                </a>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a class="text-center" href="#">
-                  <strong>See All Alerts</strong>
-                  <i class="fa fa-angle-right"></i>
-                </a>
-              </li>
-            </ul>
-          </li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <i class="fa fa-user fa-fw"></i> AdminName <b class="caret"></b>
+              <i class="fa fa-user fa-fw"></i>
+                 <?php 
+                  $name = isset($_SESSION['NAME']) ? $_SESSION['NAME']:'';
+                  echo $name;
+                  ?>
+               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu dropdown-user">
-              <li><a href="index.php?page=profil"><i class="fa fa-user fa-fw"></i> Profil</a>
-              </li>
-              <li><a href="index.php?page=parametre"><i class="fa fa-gear fa-fw"></i> Parametres</a>
+              <li><a href="index.php?page=profile"><i class="fa fa-user fa-fw"></i> Profil</a>
               </li>
               <li class="divider"></li>
               <li><a href="index.php?page=logout"><i class="fa fa-sign-out fa-fw"></i> Déconnexion</a>
@@ -62,17 +36,6 @@
         <div class="navbar-default sidebar" role="navigation">
           <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
-              <li class="sidebar-search">
-                <div class="input-group custom-search-form">
-                  <input type="text" class="form-control" placeholder="Search...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button">
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </span>
-                </div>
-                <!-- /input-group -->
-              </li>
               <li>
                 <a href="index.php?page=home" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
               </li>              
@@ -88,42 +51,142 @@
                 </ul>
                 <!-- /.nav-second-level -->
               </li>
-              <li>
-                <a href="#"><i class="fa fa-table fa-fw"></i> Approvisionemment de Dépot<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                  <li>
-                    <a href="index.php?page=quincailleries">Quincaillerie</a>
-                  </li>
-                  <li>
-                    <a href="index.php?page=magasin">Magasin</a>
-                  </li>
-                </ul>
-                <!-- /.nav-second-level -->
+               <?php 
+               if (isset($_SESSION['TYPE'])) {
+                   $type=$_SESSION['TYPE'];
+                   if($type=="admin" OR $type=="gestionnaire de dépôt"){ ?>
+               <li>
+                <a href="index.php?page=depot"><i class="fa fa-table fa-fw"></i> Dépot </a>
               </li>
-              <li>
-                <a href="#"><i class="fa fa-sitemap fa-fw"></i> Stock Dispo<span class="fa arrow"></span></a>
+                 <?php }
+               }
+              ?>
+             
+               <?php 
+                 if (isset($_SESSION['TYPE'])) {
+                    $type=$_SESSION['TYPE'];
+                    if ($type=="admin" OR $type=="magasinier" OR $type=="quincaillerier") { ?>
+                <li>
+                <a href="#"><i class="fa fa-sitemap fa-fw"></i> Recquisitionner<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                  <?php 
+                   if ($type=="quincaillerier" OR $type=="admin") { ?>
                   <li>
                     <a href="index.php?page=stock_quincailleries">Quincaillerie</a>
                   </li>
-                  <li>
+                 <?php  }
+                   ?>
+                  <?php 
+                  if ($type=="magasinier" OR $type=="admin") { ?>
+                    <li>
                     <a href="index.php?page=stock_magasin">Magasin</a>
+                  </li>
+                 <?php }
+                   ?>
+                </ul>
+                <!-- /.nav-second-level -->
+              </li>
+                   <?php }
+                 }
+                ?>
+                <?php 
+                 if (isset($_SESSION['TYPE'])) {
+                    $type=$_SESSION['TYPE'];
+                    if ($type=="admin" OR $type=="magasinier" OR $type=="quincaillerier") { ?>
+                <li>
+                <a href="#"><i class="fa fa-money fa-fw"></i>  Vente<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                  <?php 
+                   if ($type=="quincaillerier" OR $type=="admin") { ?>
+                  <li>
+                      <a href="index.php?page=vente">Quincaillerie</a>
+                  </li>
+                 <?php  }
+                   ?>
+                  <?php 
+                  if ($type=="magasinier" OR $type=="admin") { ?>
+                    <li>
+                    <a href="index.php?page=ventem">Magasin</a>
+                  </li>
+                 <?php }
+                   ?>
+                </ul>
+                <!-- /.nav-second-level -->
+              </li>
+                   <?php }
+                 }
+                ?>
+                <!--  -->
+                <?php 
+               if (isset($_SESSION['TYPE'])) {
+                   $type=$_SESSION['TYPE'];
+                   if($type=="admin"){ ?>
+                       <li>
+                <a href="#"><i class="fa fa-usd fa-fw"></i> Caisse<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                  <li>
+                <a href="index.php?page=caisse">Etat</a>
+                  </li>
+                  <li>
+                <a href="index.php?page=caisseE">Entrée</a>
+                  </li>
+                  <li>
+                <a href="index.php?page=caisseS">Dépense</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
               </li>
-              <li>
-                <a href="forms.html"><i class="fa fa-money fa-fw"></i> Vente</a>
-              </li>
-              <li>
-                <a href="forms.html"><i class="fa fa-usd fa-fw"></i> Caisse</a>
-              </li>
-              <li>
+                  <?php }
+               }
+              ?>
+                
+              <?php 
+               if (isset($_SESSION['TYPE'])) {
+                   $type=$_SESSION['TYPE'];
+                   if($type=="admin"){ ?>
+                    <li>
                 <a href="index.php?page=user"><i class="fa fa-user fa-fw"></i> Utilisateurs</a>
               
                 <!-- /.nav-second-level -->
               </li>
+                  <?php }
+               }
+              ?>
+              <?php 
+               if (isset($_SESSION['TYPE'])) {
+                   $type=$_SESSION['TYPE'];
+                   if($type=="admin"){ ?>
+                    <li>
+                <a href="#"><i class="fa fa-plus fa-fw"></i> Historique</a>
+              
+                <!-- /.nav-second-level -->
+              </li>
+                  <?php }
+               }
+              ?>
+               <?php 
+               if (isset($_SESSION['TYPE'])) {
+                  $type=$_SESSION['TYPE'];
+                  if ($type=="admin") { ?>
+                     <li>
+                <a href="#"><i class="fa fa-sitemap fa-fw"></i> Rapports<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                  <li>
+                    <a href="index.php?page=inventory">Inventaire</a>
+                  </li>
+                  <!-- <li>
+                    <a href="index.php?page=stock_magasin">Stock</a>
+                  </li> -->
+                </ul>
+                <!-- /.nav-second-level -->
+              </li>
+                 <?php }
+               }
+                ?>
             </ul>
           </div>
         </div>
       </nav>
+<?php }else{
+header("location:index.php?page=login");
+} ?>

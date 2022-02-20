@@ -8,12 +8,24 @@
       </div>
       <div class="modal-body">	
       <form method="post" id="formulaire"  enctype="multipart/form-data">
+          <?php 
+            if ($_SESSION['ID']) { ?>
+            	<input type="hidden" value="<?=$_SESSION['ID'] ?>" name="iduser" id="iduser" class="form-control" required>
+           <?php }
+           ?>
       	<div class="row">
       		<div class="col-sm-6">
-      			<div class="form-group">      				
-      				<b><label>Article : </label> <span class="text-danger">*</span></b>
-      				<input type="text" class="form-control" placeholder="article" name="article" id="article" required>
-      			</div>
+			  <div class="form-group">      				
+      				<b><label>Catégorie : </label> <span class="text-danger"></span></b>
+							
+				<select name="cat" id="cat" class='form-control'>
+					<option value=''>Choisir une Catégorie</option>
+					<?php foreach ($getCat as $f) {?>
+						<option value='<?=$f->ID?>'><?=$f->CATEGORIE?></option>				
+					<?php } ?>
+				</select>
+					 </div>
+					 
       			<div class="form-group">      				
       				<b><label>Conditionnement : </label> <span class="text-danger"></span></b>
                       <select name="cond" class="form-control" id="cond">
@@ -25,16 +37,12 @@
 					 </div>
       		</div>
       		<div class="col-sm-6">
-      			<div class="form-group">      				
-      				<b><label>Catégorie : </label> <span class="text-danger"></span></b>
-							
-				<select name="cat" id="cat" class='form-control'>
-					<option value=''>Choisir une Catégorie</option>
-					<?php foreach ($getCat as $f) {?>
-						<option value='<?=$f->ID?>'><?=$f->CATEGORIE?></option>				
-					<?php } ?>
-				</select>
-					 </div>
+			  <div class="form-group">      				
+      				<b><label>Article : </label> <span class="text-danger">*</span></b>
+      				<input type="text" class="form-control" placeholder="article" name="article" id="article" required>
+      			</div>
+			    
+      			
       			<div class="form-group">      				
       				<b><label>Coût d'achat : </label> <span class="text-danger">*</span></b>
       				<input type="number" class="form-control" placeholder="prix d'achat + transport" name="prix" id="prix" required>

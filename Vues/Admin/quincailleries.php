@@ -102,7 +102,7 @@
                                                             <a data-toggle="modal" data-target="#approv" type='submit' name='update' class='btn btn-xs btn-primary update' title='Approvisionner'><i class='fa fa-cart-plus'></i> Approvisionner</a>
                                                          </td>
                                                         <td class="center">
-                                                            <a href='index.php?page=modadmin&id=$value->ID' type='submit' name='update' class='btn btn-xs btn-info update' title='Modifier Admin'><span class='glyphicon glyphicon-edit'></span></a>
+                                                            <a href='index.php?page=approv&id=<?=$cat->ID?>'  type='submit' name='update' class='btn btn-xs btn-info update' title='Modifier Admin'><span class='glyphicon glyphicon-edit'></span></a>
                                                             <button type='button' name='delete' id='".$value->ID."' class='btn btn-xs btn-danger delete' title='Supprimer Admin'><span class='glyphicon glyphicon-trash'></span></button>
 
                                                         </td>

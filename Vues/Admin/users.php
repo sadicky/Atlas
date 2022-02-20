@@ -65,7 +65,13 @@ $users=$user->getUsers();
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h1 class="page-header"><?= $title ?></h1>
+                            <h1 class="page-header"><?= $title ?>
+                                <?php 
+                                  if (isset($_SESSION['TYPE'])) {
+                                      echo $_SESSION['TYPE'];
+                                  }
+                                 ?>
+                            </h1>
                         </div>
      				 <div class='col-sm-12' id="message"></div>	
                         <!-- /.col-lg-12 -->
@@ -76,9 +82,8 @@ $users=$user->getUsers();
                                         Les Utilisateurs
                         <div class="pull-right"> 
                             <button data-toggle="modal" data-target="#ajoutuser"  class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Nouvel</button>
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Exporter PDF</button>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-file-excel-o fa-fw"></i> Exporter Excel</button>
-                            <button class="btn btn-default btn-xs"><i class="fa fa-download fa-fw"></i> Importer</button>
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
+                            
                         </div>
                                     </div>
                                     <!-- /.panel-heading -->
@@ -91,7 +96,7 @@ $users=$user->getUsers();
                                                         <th><center>Username</center></th>
                                                         <th><center>Type</center></th>
                                                         <th><center>Email</center></th>
-                                                        <th><center>Statut</center></th>
+                                                        <th><center>Etat</center></th>
                                                         <th><center>Activer/Desactiver</center></th>
                                                         <th><center>Actions</center></th>
                                                     </tr>
@@ -103,18 +108,25 @@ $users=$user->getUsers();
                                                         <td><b><?=$user->NAME?></b></td>
                                                         <td><?=$user->TYPE?></td>
                                                         <td><?=$user->EMAIL?></td>
-                                                        <td><?=$user->STATUT?></td>
-                                                        <?php if($user->STATUT == 0){
-                                                        echo "<td><button type='button'  id='".$user->ID."' name='activer' class='btn btn-xs btn-default activer' ><span class='glyphicon glyphicon-ok' ></span> Activer?</button></td>";
+                                                        <?php 
+                                                        if ($user->STATUT == 0) {
+                                                            echo "<td> <span class='label label-danger'> Desactiver</span></td>";
                                                         } else {
-                                                            echo "<td>	<button type='button'  id='".$user->ID."' name='desactiver' class='btn btn-xs btn-default desactiver'><span class='glyphicon glyphicon-remove' ></span> Desactiver?</button>
+                                                            echo "<td> <span class='label label-info'> Activer</span></td>";
+                                                        }
+                                                        if($user->STATUT == 0){
+                                                        echo "<td><button type='button'  id='".$user->ID."' name='activer' class='btn btn-xs btn-default activers'><span class='glyphicon glyphicon-ok' ></span> Activer?</button></td>";
+                                                        } else {
+                                                            echo "<td>	<button type='button'  id='".$user->ID."' name='desactiver' class='btn btn-xs btn-default desactivers'><span class='glyphicon glyphicon-remove' ></span> Desactiver?</button>
                                                             </td>";}?>
                                                         <td class="center">
-                                                        <button 
+                                                        <center>
+                                                          <button 
                                                           class='btn btn-info btn-xs view_data' 
                                                           id="<?=$user->ID?>" title='Modification'>
                                                           <span class='glyphicon glyphicon-edit'></span>
                                                           </button>
+                                                        </center>
 
                                                         </td>
                                                     </tr>
@@ -174,10 +186,45 @@ $users=$user->getUsers();
 
   <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script>
-     $(document).ready(function() {
-    $('#dataTables-example').DataTable({ responsive: true });
+$(document).ready(function() {
+$('#dataTables-example').DataTable({ responsive: true });
     
-    
+       
+        $(document).on("click",".activers", function (event) {
+          event.preventDefault();
+            var id = $(this).attr("id");
+            if (confirm("Voulez-vous activer cet article? ")) {
+              $.ajax({
+                url: "Public/script/activuser.php",
+                method: "POST",
+                data: {
+                  id: id
+                },
+                success: function (data) {
+                }
+              });
+            } else {
+              return false;
+            }
+          });    
+
+$(document).on("click",".desactivers", function (event) {
+        event.preventDefault();
+          var id = $(this).attr("id");
+          if (confirm("Voulez-vous desactiver cet article ? ")) {
+            $.ajax({
+              url: "Public/script/desactivuser.php",
+              method: "POST",
+              data: {
+                id: id
+              },
+              success: function (data) {
+              }
+            });
+          } else {
+            return false;
+          }
+        });
                  
 });
 </script>

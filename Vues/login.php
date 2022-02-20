@@ -1,7 +1,6 @@
 <?php $title = 'Login';
  include 'public/includes/header.php';
  ?>
- 
  <div class="container">
             <div class="row">	
                 <div class="col-md-4 col-md-offset-4">
@@ -10,16 +9,17 @@
                             <h3 class="panel-title">S'Authentifier</h3>
                         </div>
                         <div class="panel-body">
-                            <form role="form" method="post" id="formulaire">
+                            <div id="errorMsg"></div><br/>
+                            <form role="form" method="POST" id="login_form">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="E-mail" id="email" name="email" type="email" autofocus>
+                                        <input class="form-control" placeholder="E-mail" id="email" name="EMAIL" type="email" autofocus required>
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Password" name="pwd" id="pwd" type="password" value="">
+                                        <input class="form-control" placeholder="Password" name="PWD" id="pwd" type="password" required>
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <input type="submit" value="Se Connecter" class="btn btn-lg btn-success btn-block"/>
+                                    <input type="submit" name="login" value="Se Connecter" class="btn btn-lg btn-success btn-block"/>
                                 </fieldset>
                             </form>
                         </div>
@@ -41,6 +41,3 @@
 <!-- Custom Theme JavaScript -->
 <script src="plugins/js/startmin.js"></script>
 
-
-
-        <script type="text/javascript" src="public/ajax/login.js"></script>

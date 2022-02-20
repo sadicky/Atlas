@@ -9,7 +9,7 @@ $d=$req->fetch();
 // echo $Id;
 
 ?>
-
+ 
 <div>
 
 <form method="post" id="formedit"  enctype="multipart/form-data">
@@ -25,9 +25,9 @@ $d=$req->fetch();
                       <select name="type" class="form-control" id="type" required>
                         <option value="<?=$d['TYPE']?>"><?= $d['TYPE']?></option>
                         <option value="admin">Admin</option>
-                        <option value="caissier">Caissier</option>
-                        <option value="gestionnaire de dépôt">Gestionnaire</option>
-                        <option value="facturier">Facturier</option>
+                        <option value="gestionnaire de dépôt">Gestionnaire de dépôt</option>
+                        <option value="magasinier">Magasinier</option>
+                        <option value="quincaillerier">Quincaillerier</option>
                       </select>
 					 </div>
       		</div>

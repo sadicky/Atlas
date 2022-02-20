@@ -60,7 +60,7 @@ function getCategories()
       			<div class="form-group">      				
       				<b><label>Coût d'achat : </label> <span class="text-danger">*</span></b>
       				<input type="number" value="<?=$d['PRIX']?>" class="form-control" name="prix" id="prix" required>
-      			</div><button class="btn btn-primary pull-right btn-sm submitb" name="submit" type="submit" id="submit"><i class="fa fa-plus fa-fw"></i> Ajouter</button>
+      			</div><button class="btn btn-info pull-right btn-sm submitb" name="submit" type="submit" id="submit"><i class="fa fa-download fa-fw"></i> Editer</button>
 			  
 		</div>		
 			  	
