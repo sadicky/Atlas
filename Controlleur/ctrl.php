@@ -74,6 +74,7 @@ function articles(){
 	require_once('Model/Admin/articles.class.php');
 	require_once('Model/Admin/categories.class.php');
 	$art = new Articles();
+	$arts = $art->getArticlesId();
 	$cat = new Categories();
 	$getCat = $cat->getCategoriess();
 	include('Vues/Admin/articles.php');

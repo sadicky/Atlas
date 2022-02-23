@@ -40,7 +40,8 @@
 			  <div class="form-group">      				
       				<b><label>Article : </label> <span class="text-danger">*</span></b>
       				<input type="text" class="form-control" placeholder="article" name="article" id="article" required>
-      			</div>
+					  <input type="hidden" name="expired" id="expired">
+      		</div>
 			    
       			
       			<div class="form-group">      				

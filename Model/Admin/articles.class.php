@@ -4,7 +4,7 @@ require_once("connexion.php");
 Class Articles
 {
     public $statut = 1;
-    public $dateins=null;
+    public $dateins;
     public $article;
     public $prix;
     public $qte;
@@ -13,7 +13,7 @@ Class Articles
     public $stockout;
     public $idcat;
     public $cond;
-    public $expired=null;
+    public $expired;
     public $fab;
     
     //                

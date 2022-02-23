@@ -342,11 +342,32 @@ header("location:index.php?page=login");
 
 </body>
 
-<script type="text/javascript" src="public/ajax/recquism.js"></script>
 <script>
   $(document).ready(function() {
     $('#dataTables-example').DataTable({
       responsive: true
+    });
+       // getCategories();
+       $("#formulaire").submit(function (event) {
+        event.preventDefault();
+        var aqte =  $("#aqte").val();
+        var sqte =  $("#sqte").val();
+        var qqte =  $("#qqte").val();
+        var id = $("#id").val();
+        $.ajax({
+            url: "Public/script/recquism.php",
+            method: "POST",
+            data: {
+                id:id,
+                aqte: aqte,
+                qqte: qqte,
+                sqte: sqte
+            },
+            success: function (donnees) {
+                $('#message').html(donnees).slideDown();
+                $("#formulaire")[0].reset();
+            }
+        });
     });
   });
 </script>
