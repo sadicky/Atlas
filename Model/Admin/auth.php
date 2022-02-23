@@ -38,12 +38,10 @@ if(empty($_POST['EMAIL'])){
       $msg="Error 403: Erreur de la connexion";
     }
   }else{
-      $msg="Error 403: Erreur de la connexion";
+      $msg="Error 403: ";
   }
 }
 
-
-echo $msg;
 /*
 Email 'carolle@gmail.com'
 Mot de passe '718930b5'

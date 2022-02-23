@@ -43,7 +43,7 @@
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">S'AUTHENTIFIER</h3>
+                            <h3 class="panel-title"><center>S'AUTHENTIFIER</center></h3>
                         </div>
                         <div class="panel-body">
                             <div id="errorMsg"></div><br/>
@@ -57,7 +57,15 @@
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
                                     <input type="submit" name="login" value="Se Connecter" class="btn btn-lg btn-success btn-block"/>
-                                </fieldset>
+                                </fieldset><br>
+                                <div>
+                                    <?php 
+                                    if (isset($msg)) {
+                                        // code...
+                                        echo $msg;
+                                    }
+                                     ?>
+                                </div>
                             </form>
                         </div>
                     </div>
