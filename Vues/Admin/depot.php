@@ -389,10 +389,28 @@ include_once 'Public/modals/addrec.php';
 include_once 'Public/modals/editstock.php';
 ?>
 
-<script type="text/javascript" src="public/ajax/depot.js"></script>
 <script>
 $(document).ready(function() {
 $('#dataTables-example').DataTable({responsive: true});
+
+$(document).on('click', '.approv', function(){
+        var id = $(this).attr("id");
+        var btn_action = 'fetch_single';
+        $.ajax({
+         url:"Public/script/approv.php",
+         method:"POST",
+         data:{id:id,},
+         dataType:"json",
+         success:function(data)
+         {
+          $('#article').val(data.ARTICLE);
+          $('#category_id').val(category_id);
+          $('#category_id').val(category_id);
+          $('#action').val('Edit');
+          $('#btn_action').val("Edit");
+         }
+        })
+       });
 
 $('.view_datas').click(function(){  
   var Id = $(this).attr("id");  

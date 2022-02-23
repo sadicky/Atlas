@@ -10,7 +10,7 @@ tbl_articles.QTE as QTE,tbl_articles.PRIX as PRIX,tbl_articles.CONDITIONEMMENT a
 tbl_articles WHERE  tbl_articles.IDCAT=tbl_categories.ID AND tbl_articles.ID='$Id'";
 $req=$db->query($sql);
 $d=$req->fetch();
-var_dump($Id);
+// var_dump($Id);
 
  ?>
 
@@ -19,11 +19,12 @@ var_dump($Id);
  	<div class="row">
  		<div class="col-md-6">
  			<div class="form-group">
+				 	<label>Stock disponible</label> 			
  				<input type="number" min="20" name="qte" id="qte" class="form-control" value="<?=$d['QTE']?>">
- 				<label>Stock disponible</label>
  			</div>
  		</div>
  		<div class="col-md-6">
+				 	<label>#</label> 
  		<button class="btn btn-success btn-block submitb" name="submit" type="submit" id="submit">
            	<span class="glyphicon glyphicon-download"> Enregistrer</span>
         </button>

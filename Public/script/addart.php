@@ -10,7 +10,7 @@ $dateins=isset($_POST['dateins'])?$_POST['dateins']:"";
 $article=isset($_POST['article'])?$_POST['article']:""; 
 $prix=isset($_POST['prix'])?$_POST['prix']:""; 
 $cond= isset($_POST['cond'])?$_POST['cond']:""; 
-$expired =isset($_POST['expired'])?$_POST['expired']:""; 
+$expired =date('Y-m-d');  
 $iduser=isset($_POST['iduser'])?$_POST['iduser']:"";
 
  if(empty($_POST['iduser'])){
@@ -40,6 +40,16 @@ $iduser=isset($_POST['iduser'])?$_POST['iduser']:"";
  $article=htmlspecialchars(trim($_POST['article']));
  $prix=htmlspecialchars(trim($_POST['prix']));
  $iduser=htmlspecialchars(trim($_POST['iduser']));
+ $expired ="0000-00-00"; 
+ $dateins=date("Y-m-d"); 
+
+// $cat="yst";
+// $cond="sac";
+// $article="abc";
+// $prix=10;
+// $iduser=13;
+// $expired =date("Y-m-d"); 
+// $dateins="0000-00-00"; 
 
  $statut = 1;
  $qte = 0; 
@@ -51,9 +61,10 @@ $iduser=isset($_POST['iduser'])?$_POST['iduser']:"";
  $row=$sql->fetch();
  $art=$row['ART'];
  if($art!=$article){
-  $add=$arts->setArticle($article,$qte,$prix,$cond,$fab,$expired,$montant,$stock,$dateins,$statut,$cat,$iduser);
+  $add=$arts->setArticle($article,$qte,$prix,$cond,$expired,$fab,$montant,$stock,$dateins,$statut,$cat,$iduser);
   if(!empty($add)){
   echo "<span class='alert alert-success alert-lg col-sm-12'>Ajout reussi avec Succes<button type='button' class='close' data-dismiss='alert'>x</button></span>";  
+  // echo "<script>window.location.href='localhost/atlaslines/index.php?page=articles'</script>"; 
   echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=articles'</script>"; 
   }
   else{
