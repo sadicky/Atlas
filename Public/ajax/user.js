@@ -26,37 +26,7 @@ $(document).ready(function () {
 
   
 
-//   
-//view client view befor edit
-$('.view_data').click(function(){  
-  var Id = $(this).attr("id");  
-$.ajax({  
-  url:"public/script/viewuserbeforedit.php",  
-  method:"post",  
-  data:{Id:Id},  
-  success:function(data){  
- $('#user_detail').html(data);  
- $('#dataModal').modal("show");  
-//  getUser();
-}  
-});  
-});
-  //formB
-  $(document).on('click','.submitb',function(){
-    $.ajax({
-            url:"Public/script/edituser.php",
-            type:"post",
-            data:$("#formedit").serialize(),
-            success:function(data){
-            $("#messages").html(data).slideDown();
-            $("#dataModal").modal('hide');
-            // getUser();
-            }
-   
-    });
-    return false;
-}); 
-
+//  
 function getUser(){
   $.post('Public/script/getuser.php',function(data){
       $("#getusers").html(data);

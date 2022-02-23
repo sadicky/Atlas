@@ -1,7 +1,7 @@
 <?php 	
 // require_once 'core.php';
 
-require_once '../../Model/connexion.php';
+require_once '../../Model/Admin/connexion.php';
 $connect = getConnection();
 
 $valid['success'] = array('success' => false, 'messages' => array(), 'order_id' => '');
@@ -71,7 +71,7 @@ if($_POST) {
 	$valid['messages'] = "Successfully Added";	
 	
 	echo json_encode($valid);
-	echo "<script>window.location.href='http://localhost/atlaslines/index.php?page=vente'</script>"; 
+	echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=vente'</script>"; 
 	
 
  

@@ -1,6 +1,6 @@
 <?php 	
 
-require_once '../../Model/connexion.php';
+require_once '../../Model/Admin/connexion.php';
 $connect = getConnection();
 
 $statement = $connect->prepare("SELECT ID,ARTICLE FROM tbl_stockm WHERE STATUT = '1'and QTE > '0'");

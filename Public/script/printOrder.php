@@ -3,7 +3,7 @@
     <link href="plugins/css/bootstrap.min.css" rel="stylesheet">
 <?php    
 
-require_once '../../Model/connexion.php';
+require_once '../../Model/Admin/connexion.php';
 $connect = getConnection();
 
 // $orderId = 32;

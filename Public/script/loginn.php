@@ -1,6 +1,6 @@
 <?php 
 session_start(); 
-require_once("../../Model/connexion.php");
+require_once("../../Model/Admin/connexion.php");
 $db = getConnection();
 
 if(!empty($_POST['EMAIL']) && !empty($_POST['PWD'])){

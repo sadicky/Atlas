@@ -1,5 +1,5 @@
 <?php
-include"../../Model/connexion.php";
+include"../../Model/Admin/connexion.php";
 $db = getConnection();
 
 $Id=$_POST['Id'];

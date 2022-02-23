@@ -1,7 +1,7 @@
 
 <?php 	
 header('Content-type: application/json');
-require_once '../../Model/connexion.php';
+require_once '../../Model/Admin/connexion.php';
 $connect = getConnection();
 
 $productId = $_POST['productId'];

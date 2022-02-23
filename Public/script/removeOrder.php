@@ -1,6 +1,6 @@
 <?php 	
 
-require_once '../../Model/connexion.php';
+require_once '../../Model/Admin/connexion.php';
 $connect = getConnection();
 
 
