@@ -35,7 +35,7 @@ if(empty($_POST['EMAIL'])){
 
       header("location:index.php?page=home");
     }else{
-      $msg="Error 403: Erreur de la connexion";
+      $msg="<strong style='color:red'>Error 403</strong>: L'adresse mail et le mot de passe sont incorrect ";
     }
   }else{
       $msg="Error 403: ";

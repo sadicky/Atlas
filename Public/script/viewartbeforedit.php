@@ -58,9 +58,9 @@ function getCategories()
       			</div>
 
       			<div class="form-group">      				
-      				<b><label>Coût d'achat : </label> <span class="text-danger">*</span></b>
+      				<b><label>Prix d'achat : </label> <span class="text-danger">*</span></b>
       				<input type="number" value="<?=$d['PRIX']?>" class="form-control" name="prix" id="prix" required>
-      			</div><button class="btn btn-info pull-right btn-sm submitb" name="submit" type="submit" id="submit"><i class="fa fa-download fa-fw"></i> Editer</button>
+      			</div><button class="btn btn-info pull-right btn-sm submitarticle" name="submit" type="submit" id="submit"><i class="fa fa-download fa-fw"></i> Editer</button>
 			  
 		</div>		
 			  	

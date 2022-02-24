@@ -29,6 +29,7 @@ if(empty($_POST['Id'])){
 		echo '
 		<strong style="color: green;">Succes:</strong> Categorie est modifiee avec succes .
 		';
+		echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=categories'</script>"; 
 	  }else{
 		echo '
 		<strong style="color: red;">Erreur 401:</strong> Categorie existe deja.

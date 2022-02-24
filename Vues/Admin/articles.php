@@ -258,6 +258,7 @@ $arts = $art->getArticlesId();
             </div>
             <div class='col-sm-12' id="message"></div>
             <div id="messages"></div>
+            <br>
             <!-- /.col-lg-12 -->
             <div class="row">
               <div class="col-lg-12">
@@ -312,7 +313,7 @@ $arts = $art->getArticlesId();
                         </thead>
                         <tbody>
                           <?php
-                          var_dump($arts);
+                          // var_dump($arts);
                           if (isset($_SESSION['TYPE'])) {
                             $type = $_SESSION['TYPE'];
                             if ($type == "admin") { ?>
@@ -432,15 +433,15 @@ $arts = $art->getArticlesId();
       });
     });
     //
-    $(document).on('click', '.submitb', function() {
-      $.ajax({
+    $(document).on('click', '.submitarticle', function() {
+      $.ajax({ 
         url: "Public/script/editart.php",
         type: "post",
         data: $("#formeditart").serialize(),
         success: function(data) {
           $("#messages").html(data).slideDown();
           $("#artModal").modal('hide');
-          // getUser();
+          
         }
 
       });
@@ -483,7 +484,7 @@ $arts = $art->getArticlesId();
     });
 
 
-    // getCategories();
+    // setCategories();
     $("#formulaire").submit(function(event) {
       event.preventDefault();
       var statut = 1;

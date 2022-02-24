@@ -308,7 +308,7 @@ header("location:index.php?page=login");
                                                         <td class="center">
                                                         <center>
                                                           <button 
-                                                          class='btn btn-danger btn-sm view_datas'  id='<?=$user->ID?>' title='Modification'>
+                                                          class='btn btn-success btn-sm view_data'  id='<?=$user->ID?>' title='Modification'>
                                                           <span class='glyphicon glyphicon-edit'></span>
                                                           </button>
                                                         </center>
@@ -335,7 +335,7 @@ header("location:index.php?page=login");
                 <!-- /#page-wrapper -->
 
             </div>
-            <div id="dataModal" class="modal fade">  
+            <!-- <div id="dataModal" class="modal fade">  
       <div class="modal-dialog">  
            <div class="modal-content">  
                 <div class="modal-header">  
@@ -349,11 +349,12 @@ header("location:index.php?page=login");
                 </div>  
            </div>  
       </div>  
- </div>
+ </div> -->
 
             <?php 
             
             include_once 'Public/modals/adduser.php';
+            include_once 'Public/modals/edituser.php';
 
             ?>
 
@@ -428,7 +429,7 @@ $(document).on("click",".desactivers", function (event) {
 
          
 //view client view befor edit
-$('.view_datas').click(function(){  
+$('.view_data').click(function(){  
   var Id = $(this).attr("id");  
 $.ajax({  
   url:"Public/script/viewuserbeforedit.php",  

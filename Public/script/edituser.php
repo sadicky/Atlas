@@ -52,6 +52,7 @@ if(empty($_POST['Id'])){
 		echo '
 		<strong style="color: green;">Succes:</strong> Utilisateur est modifie avec succes .
 		';
+		echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=user'</script>";
 	  }else{
 		echo '
 		<strong style="color: red;">Erreur 401:</strong> Utilisateur existe deja.

@@ -1,67 +1,39 @@
 <?php 
-include"../../Model/connexion.php";
+// include"../../Model/connexion.php";
+include"../../Model/Admin/connexion.php";
 $db = getConnection();
 
 if(empty($_POST['Id'])){
-	echo '
-	<strong style="color: red;">Erreur 403:</strong> Cet article n\'existe pas
-	';
-  }elseif(empty($_POST['cat'])){
-	echo '
-	<strong style="color: red;">Erreur 403:</strong> Veuillez completer la categorie SVP !
-	';
-  }elseif(empty($_POST['cond'])){
-	echo '
-	<strong style="color: red;">Erreur 403:</strong> Veuillez completer le conditionnement SVP !
-	';
-  }elseif(empty($_POST['article'])){
-	echo "
-	<strong style='color: red;'>Erreur 403:</strong> Veuillez completer l'article SVP !
-	";
-  }elseif(empty($_POST['prix'])){
-	echo "
-	<strong style='color: red;'>Erreur 403:</strong> Veuillez completer le prix SVP !
-	";
-  }else{
-	$Id = htmlspecialchars(trim($_POST['Id']));
-    $article=htmlspecialchars(trim($_POST['article']));
-    $prix=htmlspecialchars(trim($_POST['prix']));  
-    $cond=htmlspecialchars(trim($_POST['cond']));
-    $cat=htmlspecialchars(trim($_POST['cat']));
+ echo "<strong style='color:red;'>Cet article n'existe pas</strong>";
+}elseif(empty($_POST['cat'])){
+ echo "<strong style='color:red;'>Veuillez completer la categorie de cet article</strong>";
+}elseif(empty($_POST['cond'])){
+	echo "<strong style='color:red;'>Veuillez completer le conditionnement de cet article</strong>";
+}elseif(empty($_POST['article'])){
+	echo "<strong style='color:red;'>Veuillez completer le nom d'article</strong>";
+}elseif(empty($_POST['prix'])){
+	echo "<strong style='color:red;'>Veuillez completer le prix de cet article</strong>";
+}else{
+$id=htmlspecialchars(trim($_POST['Id']));
+$cat=htmlspecialchars(trim($_POST['cat']));
+$cond=htmlspecialchars(trim($_POST['cond']));
+$article=htmlspecialchars(trim($_POST['article']));
+$prix=htmlspecialchars(trim($_POST['prix']));
 
-	$sql1="SELECT tbl_articles.ID as ID,tbl_articles.ARTICLE as ARTICLE FROM tbl_categories,tbl_articles WHERE tbl_articles.IDCAT=tbl_categories.ID AND tbl_articles.ID='$Id' ";
-	$sql2="UPDATE tbl_articles SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?";
-	$sql3="UPDATE tbl_stockm SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?";
-	$sql4="UPDATE tbl_stockq SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?";
-	$req1=$db->query($sql1);
-	$req2=$db->prepare($sql2);
-	$req3=$db->prepare($sql3);
-	$req4=$db->prepare($sql4);
-	$data1 = $req1->fetch();
-	if(empty($data1)){
-	  echo '
-	  <strong style="color: red;">Erreur 401:</strong> Cet article n\'existe pas.
-	  ';
-	}else{
-	  $data2 = $req2->execute(array($article,$prix,$cond,$cat,$Id));
-	  $data3 = $req3->execute(array($article,$prix,$cond,$cat,$Id));
-	  $data4 = $req4->execute(array($article,$prix,$cond,$cat,$Id));
-	  if ($data2 && $data3 && $data4) {
-		echo "
-		<strong style='color: green;'>Succes:</strong>  l'articele ".$data1['ARTICLE']." est modifié par <strong>".$article."</strong> avec succes .
-		";
-	  }else{
-		echo '
-		<strong style="color: red;">Erreur 401:</strong> article existe deja.
-		';
-	  }
-  
-	}
-  
-  }
+$sql=$db->prepare("UPDATE tbl_articles SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?");
+$sql1=$db->prepare("UPDATE tbl_stockm SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?");
+$sql2=$db->prepare("UPDATE tbl_stockq SET ARTICLE=?,PRIX=?,CONDITIONEMMENT=?,IDCAT=? WHERE ID=?");
+$data=$sql->execute(array($article,$prix,$cond,$cat,$id));
+$data1=$sql1->execute(array($article,$prix,$cond,$cat,$id));
+$data2=$sql2->execute(array($article,$prix,$cond,$cat,$id));
+/*----------------------------------------------------------*/
+if($data OR $data1 OR $data2){
+ echo "<strong style='color:green;'>L'article est modifié avec succes</strong>";
+ echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=articles'</script>"; 
+}else{
+echo "<strong style='color:red;'>Erreur de la modification d'un article</strong>";
+}
 
+}
 
-
-
-
- ?>
+?>
