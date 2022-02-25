@@ -176,3 +176,10 @@ function caisseS(){
 	$getDep = $depense->getDepense();	
 	 include('Vues/Admin/caisses.php');
 }
+
+function historicapp(){
+	require_once('Model/Admin/historic.class.php');
+	$hist= new Historics();
+	$getHist= $hist->getHistoricApp();
+	include('Vues/Admin/historicapp.php');
+}

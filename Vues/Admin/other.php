@@ -235,13 +235,17 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php }
                }
               ?>
-              <?php 
+               <?php 
                if (isset($_SESSION['TYPE'])) {
                    $type=$_SESSION['TYPE'];
-                   if($type=="admin"){ ?>
-                    <li>
-                <a href="#"><i class="fa fa-plus fa-fw"></i> Historique</a>
-              
+                   if($type=="admin" OR $type="gestionnaire de dépôt"){ ?>
+                         <li>
+                <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                  <li>
+                <a href="index.php?page=historicapp">Historique d'approvisionnement</a>
+                  </li>
+                </ul>
                 <!-- /.nav-second-level -->
               </li>
                   <?php }
