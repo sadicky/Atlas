@@ -3,6 +3,7 @@ session_start();
 include 'Controlleur/ctrl.php';
 if(isset($_SESSION['TYPE'])){ 
   $type=$_SESSION['TYPE'];
+  $id=$_SESSION['ID'];
   if ($type=="admin") {
   	if(isset($_GET['page'])){
 	if($_GET['page']=='login'){

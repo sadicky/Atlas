@@ -217,31 +217,31 @@ if ($_GET['o'] == 'add') {
             <!--/panel-->
             <div class="panel-body">
 
-              <?php if ($_GET['o'] == 'add') { ?>
+              <?php if ($_GET['o'] == 'add') : ?>
 
                 <div class="success-messages"></div>
                 <!--/success-messages-->
 
-                <form class="form-horizontal" method="POST" action="public/script/createOrder.php" id="createOrderForm">
+                <form class="form-horizontal" method="POST" action="Public/script/createOrder.php" id="createOrderForm">
 
                   <div class="form-group">
                     <label for="orderDate" class="col-sm-2 control-label">Date</label>
                     <div class="col-sm-10">
-                      <input type="date" class="form-control" id="datev" name="datev" autocomplete="off" />
+                      <input type="date" class="form-control" id="datev" name="datev" autocomplete="off" required/>
                     </div>
                   </div>
                   <!--/form-group-->
                   <div class="form-group">
                     <label for="clientName" class="col-sm-2 control-label">Client</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="client" name="client" placeholder="Nom du Client" autocomplete="off" />
+                      <input type="text" class="form-control" id="client" name="client" placeholder="Nom du Client" autocomplete="off" required/>
                     </div>
                   </div>
                   <!--/form-group-->
                   <div class="form-group">
                     <label for="clientContact" class="col-sm-2 control-label">Téléphone du client</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="tel" name="tel" placeholder="Numero du client" autocomplete="off" />
+                      <input type="text" class="form-control" id="tel" name="tel" placeholder="Numero du client" autocomplete="off" required/>
                     </div>
                   </div>
                   <!--/form-group-->
@@ -269,7 +269,7 @@ if ($_GET['o'] == 'add') {
                         <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
                           <td style="margin-left:20px;">
                             <div class="form-group">
-                              <select class="form-control" name="article[]" id="article<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
+                              <select class="form-control" required name="article[]" id="article<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
                                 <option value="">Choisir un article</option>
                                 <?php
                                 foreach ($data as $row) {
@@ -317,7 +317,7 @@ if ($_GET['o'] == 'add') {
                     <div class="form-group">
                       <label for="paid" class="col-sm-3 control-label"> Montant payé</label>
                       <div class="col-sm-9">
-                        <input type="text" class="form-control" id="paid" name="paid" autocomplete="off" onkeyup="paidAmount()" />
+                        <input type="text" class="form-control" id="paid" name="paid" required autocomplete="off" onkeyup="paidAmount()" />
                       </div>
                     </div>
                     <!--/form-group-->
@@ -344,7 +344,7 @@ if ($_GET['o'] == 'add') {
                     <div class="form-group">
                       <label for="clientContact" class="col-sm-3 control-label">Type du Paiment </label>
                       <div class="col-sm-9">
-                        <select class="form-control" name="paymentType" id="paymentType">
+                        <select class="form-control" name="paymentType" id="paymentType" required>
                           <option value="">~~SELECT~~</option>
                           <option value="Cheque">Cheque</option>
                           <option value="Cash">Cash</option>
@@ -356,7 +356,7 @@ if ($_GET['o'] == 'add') {
                     <div class="form-group">
                       <label for="clientContact" class="col-sm-3 control-label">Statut du Paiement</label>
                       <div class="col-sm-9">
-                        <select class="form-control" name="paymentStatus" id="paymentStatus">
+                        <select class="form-control" required name="paymentStatus" id="paymentStatus">
                           <option value="">~~SELECT~~</option>
                           <option value="totalite">Totalité</option>
                           <option value="partiel">Acompte(Partiel)</option>
@@ -383,14 +383,12 @@ if ($_GET['o'] == 'add') {
             <!--/panel-->
           </div>
           <!--/panel-->
-        <?php } ?>
+        <?php endif ?>
         </div>
       </div>
 
       <!-- jQuery -->
       <script src="plugins/js/jquery.min.js"></script>
-
-
 
       <!-- Bootstrap Core JavaScript -->
       <script src="plugins/js/bootstrap.min.js"></script>
@@ -406,164 +404,162 @@ if ($_GET['o'] == 'add') {
       <script src="plugins/js/startmin.js"></script>
 </body>
 <script>
-  $(document).ready(function () {
-  var divRequest = $(".div-request").text();
+  $(document).ready(function() {
+    var divRequest = $(".div-request").text();
 
-  if (divRequest == 'add') {
+    if (divRequest == 'add') {
 
-    // create order form function
-    $("#createOrderForm").unbind('submit').bind('submit', function() {
-      var form = $(this);
+      // create order form function
+      $("#createOrderForm").unbind('submit').bind('submit', function() {
+        var form = $(this);
+        $('.form-group').removeClass('has-error').removeClass('has-success');
+        $('.text-danger').remove();
 
-      $('.form-group').removeClass('has-error').removeClass('has-success');
-      $('.text-danger').remove();
+        var orderDate = $("#datev").val();
+        var client = $("#client").val();
+        var tel = $("#tel").val();
+        var paid = $("#paid").val();
+        var paymentType = $("#paymentType").val();
+        var paymentStatus = $("#paymentStatus").val();
 
-      var orderDate = $("#datev").val();
-      var client = $("#client").val();
-      var tel = $("#tel").val();
-      var paid = $("#paid").val();
-      var paymentType = $("#paymentType").val();
-      var paymentStatus = $("#paymentStatus").val();
-
-      // form validation 
-      if (orderDate == "") {
-        $("#orderDate").after('<p class="text-danger">Date de vente inexistante </p>');
-        $('#orderDate').closest('.form-group').addClass('has-error');
-      } else {
-        $('#orderDate').closest('.form-group').addClass('has-success');
-      } // /else
-
-      if (client == "") {
-        $("#client").after('<p class="text-danger"> Le nom du client est obligatoire </p>');
-        $('#client').closest('.form-group').addClass('has-error');
-      } else {
-        $('#client').closest('.form-group').addClass('has-success');
-      } // /else
-
-      if (tel == "") {
-        $("#tel").after('<p class="text-danger"> Le contact est obligatoire </p>');
-        $('#tel').closest('.form-group').addClass('has-error');
-      } else {
-        $('#tel').closest('.form-group').addClass('has-success');
-      } // /else
-
-      if (paid == "") {
-        $("#paid").after('<p class="text-danger"> Ce Champ est obligatoire </p>');
-        $('#paid').closest('.form-group').addClass('has-error');
-      } else {
-        $('#paid').closest('.form-group').addClass('has-success');
-      } // /else
-
-
-      if (paymentType == "") {
-        $("#paymentType").after('<p class="text-danger">Le type de paiement est obligatoire</p>');
-        $('#paymentType').closest('.form-group').addClass('has-error');
-      } else {
-        $('#paymentType').closest('.form-group').addClass('has-success');
-      } // /else
-
-      if (paymentStatus == "") {
-        $("#paymentStatus").after('<p class="text-danger"> Le champs du statut de paiement est obligatoire </p>');
-        $('#paymentStatus').closest('.form-group').addClass('has-error');
-      } else {
-        $('#paymentStatus').closest('.form-group').addClass('has-success');
-      } // /else
-
-
-      // array validation
-      var article = document.getElementsByName('article[]');
-      var validateProduct;
-      for (var x = 0; x < article.length; x++) {
-        var articleId = article[x].id;
-        if (article[x].value == '') {
-          $("#" + articleId + "").after('<p class="text-danger"> Le produit est obligatoire!! </p>');
-          $("#" + articleId + "").closest('.form-group').addClass('has-error');
+        // form validation 
+        if (orderDate == "") {
+          $("#orderDate").after('<p class="text-danger">Date de vente inexistante </p>');
+          $('#orderDate').closest('.form-group').addClass('has-error');
         } else {
-          $("#" + articleId + "").closest('.form-group').addClass('has-success');
-        }
-      } // for
+          $('#orderDate').closest('.form-group').addClass('has-success');
+        } // /else
 
-      for (var x = 0; x < article.length; x++) {
-        if (article[x].value) {
-          validateProduct = true;
+        if (client == "") {
+          $("#client").after('<p class="text-danger"> Le nom du client est obligatoire </p>');
+          $('#client').closest('.form-group').addClass('has-error');
         } else {
-          validateProduct = false;
-        }
-      } // for       		   	
+          $('#client').closest('.form-group').addClass('has-success');
+        } // /else
 
-      var qte = document.getElementsByName('qte[]');
-      var validateqte;
-      for (var x = 0; x < qte.length; x++) {
-        var qteId = qte[x].id;
-        if (qte[x].value == '') {
-          $("#" + qteId + "").after('<p class="text-danger">La quantite est obligatoire!! </p>');
-          $("#" + qteId + "").closest('.form-group').addClass('has-error');
+        if (tel == "") {
+          $("#tel").after('<p class="text-danger"> Le contact est obligatoire </p>');
+          $('#tel').closest('.form-group').addClass('has-error');
         } else {
-          $("#" + qteId + "").closest('.form-group').addClass('has-success');
-        }
-      } // for
+          $('#tel').closest('.form-group').addClass('has-success');
+        } // /else
 
-      for (var x = 0; x < qte.length; x++) {
-        if (qte[x].value) {
-          validateqte = true;
+        if (paid == "") {
+          $("#paid").after('<p class="text-danger"> Ce Champ est obligatoire </p>');
+          $('#paid').closest('.form-group').addClass('has-error');
         } else {
-          validateqte = false;
-        }
-      } // for       	
+          $('#paid').closest('.form-group').addClass('has-success');
+        } // /else
 
 
-      if (orderDate && client && tel && paid && paymentType && paymentStatus) {
-        if (validateProduct == true && validateqte == true) {
-          // create order button
-          // $("#createOrderBtn").button('loading');
+        if (paymentType == "") {
+          $("#paymentType").after('<p class="text-danger">Le type de paiement est obligatoire</p>');
+          $('#paymentType').closest('.form-group').addClass('has-error');
+        } else {
+          $('#paymentType').closest('.form-group').addClass('has-success');
+        } // /else
 
-          $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            data: form.serialize(),
-            dataType: 'json',
-            success: function(response) {
-              // console.log(response);
-              // reset button
-              $("#createOrderBtn").button('reset');
-
-              $(".text-danger").remove();
-              $('.form-group').removeClass('has-error').removeClass('has-success');
-
-              if (response.success == true) {
-
-                // create order button
-                $(".success-messages").html('<div class="alert alert-success">' +
-                  '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                  '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
-                  ' <br /> <br /> <a type="button" onclick="printOrder(' + response.order_id + ')" class="btn btn-primary"> <i class="glyphicon glyphicon-print"></i> Print </a>' +
-                  '<a href="index.php?page=order&o=add" class="btn btn-default" style="margin-left:10px;"> <i class="glyphicon glyphicon-plus-sign"></i> Add New Order </a>' +
-                  '</div>');
-
-                $("html, body, div.panel, div.pane-body").animate({
-                  scrollTop: '0px'
-                }, 100);
-
-                // disabled te modal footer button
-                $(".submitButtonFooter").addClass('div-hide');
-                // remove the product row
-                $(".removeProductRowBtn").addClass('div-hide');
-
-              } else {
-                alert(response.messages);
-              }
-            } // /response
-          }); // /ajax
-        } // if array validate is true
-      } // /if field validate is true
+        if (paymentStatus == "") {
+          $("#paymentStatus").after('<p class="text-danger"> Le champs du statut de paiement est obligatoire </p>');
+          $('#paymentStatus').closest('.form-group').addClass('has-error');
+        } else {
+          $('#paymentStatus').closest('.form-group').addClass('has-success');
+        } // /else
 
 
-      return false;
-    }); // /create order form function	
+        // array validation
+        var article = document.getElementsByName('article[]');
+        var validateProduct;
+        for (var x = 0; x < article.length; x++) {
+          var articleId = article[x].id;
+          if (article[x].value == '') {
+            $("#" + articleId + "").after('<p class="text-danger"> Le produit est obligatoire!! </p>');
+            $("#" + articleId + "").closest('.form-group').addClass('has-error');
+          } else {
+            $("#" + articleId + "").closest('.form-group').addClass('has-success');
+          }
+        } // for
 
-  }
+        for (var x = 0; x < article.length; x++) {
+          if (article[x].value) {
+            validateProduct = true;
+          } else {
+            validateProduct = false;
+          }
+        } // for       		   	
+
+        var qte = document.getElementsByName('qte[]');
+        var validateqte;
+        for (var x = 0; x < qte.length; x++) {
+          var qteId = qte[x].id;
+          if (qte[x].value == '') {
+            $("#" + qteId + "").after('<p class="text-danger">La quantite est obligatoire!! </p>');
+            $("#" + qteId + "").closest('.form-group').addClass('has-error');
+          } else {
+            $("#" + qteId + "").closest('.form-group').addClass('has-success');
+          }
+        } // for
+
+        for (var x = 0; x < qte.length; x++) {
+          if (qte[x].value) {
+            validateqte = true;
+          } else {
+            validateqte = false;
+          }
+        } // for       	
+
+
+        if (orderDate && client && tel && paid && paymentType && paymentStatus) {
+          if (validateProduct == true && validateqte == true) {
+            // create order button
+            $("#createOrderBtn").button('loading');
+
+            $.ajax({
+              url: form.attr('action'),
+              type: form.attr('method'),
+              data: form.serialize(),
+              dataType: 'json',
+              success: function(response) {
+                // console.log(response);
+                // reset button
+                $("#createOrderBtn").button('reset');
+
+                $(".text-danger").remove();
+                $('.form-group').removeClass('has-error').removeClass('has-success');
+
+                if (response.success == true) {
+
+                  // create order button
+                  $(".success-messages").html('<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
+                    ' <br /> <br /> <a type="button" onclick="printOrder(' + response.order_id + ')" class="btn btn-primary"> <i class="glyphicon glyphicon-print"></i> Print </a>' +
+                    '<a href="index.php?page=order&o=add" class="btn btn-default" style="margin-left:10px;"> <i class="glyphicon glyphicon-plus-sign"></i> Add New Order </a>' +
+                    '</div>');
+
+                  $("html, body, div.panel, div.pane-body").animate({
+                    scrollTop: '0px'
+                  }, 100);
+
+                  // disabled te modal footer button
+                  $(".submitButtonFooter").addClass('div-hide');
+                  // remove the product row
+                  $(".removeProductRowBtn").addClass('div-hide');
+
+                } else {
+                  alert(response.messages);
+                }
+              } // /response
+            }); // /ajax
+          } // if array validate is true
+        } // /if field validate is true
+
+
+        return false;
+      }); // /create order form function	
+
+    }
   });
- // /documernt
 
 
   // print order function
@@ -571,7 +567,7 @@ if ($_GET['o'] == 'add') {
     if (orderId) {
 
       $.ajax({
-        url: 'public/script/printOrder.php',
+        url: 'Public/script/printOrder.php',
         type: 'post',
         data: {
           orderId: orderId
@@ -600,6 +596,52 @@ if ($_GET['o'] == 'add') {
       }); // /ajax function to fetch the printable order
     } // /if orderId
   } // /print order function
+
+  // select on product data
+  function getProductData(row = null) {
+
+    if (row) {
+      var productId = $("#article" + row).val();
+
+      if (productId == "") {
+        $("#rate" + row).val("");
+
+        $("#qte" + row).val("");
+        $("#total" + row).val("");
+
+      } else {
+        $.ajax({
+          url: 'Public/script/fetchSelectedProduct.php',
+          type: 'post',
+          data: {
+            productId: productId
+          },
+          dataType: 'json',
+          success: function(data) {
+
+            $("#rate" + row).val(data[0].PRIX);
+            $("#rateValue" + row).val(data[0].PRIX);
+
+            $("#qte" + row).val(1);
+            $("#stockD" + row).text(data[0].QTE);
+
+            var total = Number(data[0].PRIX) * 1;
+            total = total.toFixed(2);
+            $("#total" + row).val(total);
+            $("#totalValue" + row).val(total);
+            // console.log(total);
+            subAmount();
+          } // /success
+        }); // /ajax function to fetch the product data	
+      }
+
+    } else {
+      alert('no row! please refresh the page');
+    }
+  } // /select on product data
+
+  // /documernt
+
 
   function addRow() {
     $("#addRowBtn").button("loading");
@@ -681,50 +723,6 @@ if ($_GET['o'] == 'add') {
       alert('error! Refresh the page again');
     }
   }
-
-  // select on product data
-  function getProductData(row = null) {
-
-    if (row) {
-      var productId = $("#article" + row).val();
-
-      if (productId == "") {
-        $("#rate" + row).val("");
-
-        $("#qte" + row).val("");
-        $("#total" + row).val("");
-
-      } else {
-        $.ajax({
-          url: 'public/script/fetchSelectedProduct.php',
-          type: 'post',
-          data: {
-            productId: productId
-          },
-          dataType: 'json',
-          success: function(data) {
-
-            $("#rate" + row).val(data[0].PRIX);
-            $("#rateValue" + row).val(data[0].PRIX);
-
-            $("#qte" + row).val(1);
-            $("#stockD" + row).text(data[0].QTE);
-
-            var total = Number(data[0].PRIX) * 1;
-            total = total.toFixed(2);
-            $("#total" + row).val(total);
-            $("#totalValue" + row).val(total);
-            // console.log(total);
-            subAmount();
-          } // /success
-        }); // /ajax function to fetch the product data	
-      }
-
-    } else {
-      alert('no row! please refresh the page');
-    }
-  } // /select on product data
-
   // table total
   function getTotal(row = null) {
     if (row) {
@@ -818,7 +816,7 @@ if ($_GET['o'] == 'add') {
         $("#removeOrderBtn").button('loading');
 
         $.ajax({
-          url: 'public/script/removeOrder.php',
+          url: 'Public/script/removeOrder.php',
           type: 'post',
           data: {
             orderId: orderId
@@ -879,7 +877,7 @@ if ($_GET['o'] == 'add') {
       $("#orderDate").datepicker();
 
       $.ajax({
-        url: 'public/script/fetchOrderData.php',
+        url: 'Public/script/fetchOrderData.php',
         type: 'post',
         data: {
           orderId: orderId
@@ -927,7 +925,7 @@ if ($_GET['o'] == 'add') {
             if (payAmount && paymentType && paymentStatus) {
               $("#updatePaymentOrderBtn").button('loading');
               $.ajax({
-                url: 'php_action/editPayment.php',
+                url: 'Public/script/editPayment.php',
                 type: 'post',
                 data: {
                   orderId: orderId,

@@ -323,7 +323,7 @@ header("location:index.php?page=login");
                                                         $db = getConnection();
                                                         $ret = $db->query("SELECT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
                                                         tbl_vente.STATUTV AS STATUTV,tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE FROM tbl_vente,tbl_users 
-                                                        where (DATEV BETWEEN '$fdate' and '$tdate') ORDER BY ID DESC");
+                                                        where (DATEV BETWEEN '$fdate' and '$tdate') AND tbl_vente.IDU = tbl_users.ID  ORDER BY ID DESC");
                                                         $cnt = 1;
                                                         $ventes = $ret->fetchAll(PDO::FETCH_OBJ);
                                                         foreach ($ventes as $vente) {
@@ -419,9 +419,9 @@ header("location:index.php?page=login");
 
                                                         require_once('Model/Admin/connexion.php');
                                                         $db = getConnection();
-                                                        $ret = $db->query("SELECT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
-                                                        tbl_vente.STATUTV AS STATUTV,tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE FROM tbl_vente,tbl_users 
-                                                         ORDER BY ID DESC");
+                                                        $ret = $db->query("SELECT DISTINCT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL, tbl_vente.STATUTV AS STATUTV,
+                                                        tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE 
+                                                        FROM tbl_vente,tbl_users WHERE tbl_vente.IDU = tbl_users.ID ORDER BY ID DESC");
                                                         $cnt = 1;
                                                         $ventes = $ret->fetchAll(PDO::FETCH_OBJ);
                                                         foreach ($ventes as $vente) {
@@ -512,13 +512,47 @@ header("location:index.php?page=login");
         <script src="plugins/js/startmin.js"></script>
 
         <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-        <script type="text/javascript" src="public/ajax/article.js"></script>
+        <script type="text/javascript" src="Public/ajax/article.js"></script>
         <script>
             $(document).ready(function() {
                 $('#dataTables-example').DataTable({
                     responsive: true
                 });
             });
+           // print order function
+  function printOrder(orderId = null) {
+    if (orderId) {
+
+      $.ajax({
+        url: 'Public/script/printOrder.php',
+        type: 'post',
+        data: {
+          orderId: orderId
+        },
+        dataType: 'text',
+        success: function(response) {
+
+          var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+          mywindow.document.write('<html><head><title>Facture</title>');
+          mywindow.document.write('</head><body>');
+          mywindow.document.write(response);
+          mywindow.document.write('</body></html>');
+
+          mywindow.document.close(); // necessary for IE >= 10
+          mywindow.focus(); // necessary for IE >= 10
+          mywindow.resizeTo(screen.width, screen.height);
+          setTimeout(function() {
+            mywindow.print();
+            mywindow.close();
+          }, 1250);
+
+          //mywindow.print();
+          //mywindow.close();
+
+        } // /success function
+      }); // /ajax function to fetch the printable order
+    } // /if orderId
+  }
         </script>
 
 </body>

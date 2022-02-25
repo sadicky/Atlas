@@ -51,7 +51,7 @@ Class Caisse
          $db = getConnection();
          $statement = $db->prepare("SELECT tbl_other_entry.ID AS ID,tbl_other_entry.CLIENT AS CLIENT,tbl_other_entry.MONTANT AS MONTANT,
          tbl_other_entry.MONTANT AS MONTANT,tbl_other_entry.STATUT,tbl_other_entry.DATE AS DATE,tbl_users.NAME AS NAME,tbl_other_entry.MOTIF AS MOTIF
-          from tbl_other_entry,tbl_users  ORDER BY ID DESC");
+          from tbl_other_entry,tbl_users Where tbl_other_entry.IDU = tbl_users.ID  ORDER BY ID DESC");
          $statement->execute();
          // $total_rows = $statement->rowCount();
          $tbP = array();
@@ -68,7 +68,7 @@ Class Caisse
         $db = getConnection();
         $statement = $db->prepare("SELECT tbl_depenses.ID AS ID,tbl_depenses.BENEFICIAIRE AS BENEFICIAIRE,tbl_depenses.MONTANT AS MONTANT,
        tbl_depenses.STATUT,tbl_depenses.DATE AS DATE,tbl_users.NAME AS NAME,tbl_depenses.MOTIF AS MOTIF 
-        from tbl_depenses,tbl_users ORDER BY ID DESC");
+        from tbl_depenses,tbl_users Where tbl_depenses.IDU = tbl_users.ID  ORDER BY ID DESC");
         $statement->execute();
         // $total_rows = $statement->rowCount();
         $tbP = array();
