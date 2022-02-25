@@ -1,6 +1,6 @@
 <?php 	
 // require_once 'core.php';
-
+session_start();
 require_once '../../Model/Admin/connexion.php';
 $connect = getConnection();
 
@@ -17,8 +17,8 @@ if($_POST) {
   $paymentStatus 				    = $_POST['paymentStatus'];
   $date								= date('Y-m-d');
   $depot 				            ="Quincaillerie";
-  $userid 				            =13;
-//   $userid 				= $_SESSION['userId'];
+//   $userid 				            =13;
+  $userid 				= $_SESSION['ID'];
 
 				
 	$sql = "INSERT INTO tbl_vente (DATEV, CLIENT,TEL, STATUTV,MTOTAL,PAYE, RESTE,
@@ -68,12 +68,11 @@ if($_POST) {
 	} // /for quantity
 
 	$valid['success'] = true;
-	$valid['messages'] = "Successfully Added";	
-	
-	echo json_encode($valid);
-	echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=vente'</script>"; 
-	
+	$valid['messages'] = "Successfully Added";
 
+	echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=vente'</script>"; 
+	echo json_encode($valid);
+	
  
 } // /if $_POST
 // echo json_encode($valid);

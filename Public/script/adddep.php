@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('../../Model/Admin/caisse.class.php');
 $caisse = new Caisse();
  $tel=isset($_POST['tel'])?$_POST['tel']:"";
@@ -9,7 +10,7 @@ $caisse = new Caisse();
  $motif=isset($_POST['motif'])?$_POST['motif']:""; 
  $adresse= isset($_POST['adresse'])?$_POST['adresse']:""; 
  $statut = 1;
- $idu = 13;
+ $idu = $_SESSION['ID'] ;
  $add = null;
   $add = $caisse-> setDepense($client,$tel,$adresse,$motif,$montant,$date,$dateins,$statut,$idu);
   if(!empty($add)){

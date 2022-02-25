@@ -472,7 +472,7 @@ header("location:index.php?page=login");
                   <?php endforeach ?>
                 </div>
                 <!-- /.list-group -->
-                <a href="index.php?page=expired" class="btn btn-default btn-block">Tous les produits expirés</a>
+                <a href="index.php?page=epuise" class="btn btn-default btn-block">Tous les produits epuisés</a>
               </div>
               <!-- /.panel-body -->
             </div>
