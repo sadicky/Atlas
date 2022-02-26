@@ -101,6 +101,10 @@ if(isset($_SESSION['TYPE'])){
 	{
 		inventory();
 	}
+	else if($_GET['page']=='historicapp')
+	{
+		historicapp();
+	}
 	else{
 		home();
 	}	
@@ -138,6 +142,10 @@ else{
 	else if($_GET['page']=='approv')
 	{
 		approv();
+	}
+	else if($_GET['page']=='historicapp')
+	{
+		historicapp();
 	}
 	else if($_GET['page']=='expired')
 	{

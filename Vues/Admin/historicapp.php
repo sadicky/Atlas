@@ -1,4 +1,4 @@
-<?php $title = 'Dépôt'; ?>
+<?php $title = "Historique d'approvisionnement"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -207,7 +207,7 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php }
                }
               ?>
-               <?php 
+              <?php 
                if (isset($_SESSION['TYPE'])) {
                    $type=$_SESSION['TYPE'];
                    if($type=="admin" OR $type="gestionnaire de dépôt"){ ?>
@@ -262,10 +262,10 @@ header("location:index.php?page=login");
                                 <div id="messages"></div>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                   Liste des articles disponibles au <?= $title ?>
+                                   <?= $title ?>
                         <div class="pull-right"> 
                             <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button> 
-                            
+                
                           
                             
                         </div>
@@ -275,76 +275,29 @@ header("location:index.php?page=login");
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
-                                                     <tr>
-                                                     <?php 
-                                                      if(isset($_SESSION['TYPE'])){
-                                                        $type=$_SESSION['TYPE'];
-                                                        if ($type=="admin") { ?>
-                                                        <th>#</th>
-                                                        <th>Articles</th>
-                                                        <th>Stock Disponible</th>
-                                                        <th>Prix</th>
-                                                        <th>Montant</th>
-                                                        <th>Approvisionner</th>
-                                                        <th>Actions</th>  
-                                                                
-                                                         <?php   }elseif($type=="gestionnaire de dépôt"){ ?>
-                                                        <th>#</th>
-                                                        <th>Articles</th>
-                                                        <th>Stock Disponible</th>
-                                                        <th>Prix</th>
-                                                        <th>Montant</th>
-                                                        <th>Approvisionner</th>
-                                                           <?php }
-                                                         }
-
-                                                         ?>
-                                                    </tr>
+                                                  <tr>
+                                                      <th>ID</th>
+                                                      <th>ARTICLE</th>
+                                                      <th>PEREMPTION</th>
+                                                      <th>PAYS DE FABRICATION</th>
+                                                      <th>DATE D'APPROVISIONNEMENT</th>
+                                                      <th>UTILISATEUR</th>
+                                                  </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
-                                                      if(isset($_SESSION['TYPE'])){
-                                                        $type=$_SESSION['TYPE'];
-                                                        if ($type=="admin") { ?>
-                                                         <?php $cnt=1; foreach($getStock as $cat):?>
-                                                    <tr class="odd gradeX">
-                                                        <td><?=$cnt?></td>
-                                                        <td><b><?=$cat->ARTICLE?></b></td>
-                                                        <td><?=$cat->QTE?></td>
-                                                        <td><?=$cat->PRIX?></td>
-                                                        <td><?=$cat->PRIX*$cat->QTE?></td>
-                                                        <td class="center">
-                                                            <a href='index.php?page=approv&id=<?=$cat->ID?>'type='submit'  class='btn btn-xs btn-primary approv' title='Approvisionner'><i class='fa fa-cart-plus'></i> Approvisionner</a>
-                                                         </td>
-                                                        <td class="center">
-                                                         <button 
-                                                          class='btn btn-info btn-xs btn-block view_datas' 
-                                                          id="<?=$cat->ID?>" title='Modification'>
-                                                          <span class='glyphicon glyphicon-edit'></span>
-                                                          </button>
-
-                                                        </td>
+                                                <?php
+                                                $i=1;
+                                                foreach($getHist as $d): ?>
+                                                    <tr>
+                                                    <td><?=$i?></td>
+                                                    <td><?=$d->ARTICLE?></td>
+                                                    <td><?=$d->PER?></td>
+                                                    <td><?=$d->PAYSF?></td>
+                                                    <td><?=$d->DATEA?></td>
+                                                    <td><?=$d->NAME?></td>
                                                     </tr>
-                                                    <?php $cnt++; endforeach ?>
-                                                                
-                                                         <?php   }elseif($type=="gestionnaire de dépôt"){ ?>
-                                                           <?php $cnt=1; foreach($getStock as $cat):?>
-                                                    <tr class="odd gradeX">
-                                                        <td><?=$cnt?></td>
-                                                        <td><b><?=$cat->ARTICLE?></b></td>
-                                                        <td><?=$cat->QTE?></td>
-                                                        <td><?=$cat->PRIX?></td>
-                                                        <td><?=$cat->PRIX*$cat->QTE?></td>
-                                                        <td class="center">
-                                                            <a href='index.php?page=approv&id=<?=$cat->ID?>'type='submit'  class='btn btn-xs btn-primary approv' title='Approvisionner'><i class='fa fa-cart-plus'></i> Approvisionner</a>
-                                                         </td>
-                                                        
-                                                    </tr>
-                                                    <?php $cnt++; endforeach ?>
-                                                           <?php }
-                                                         }
-
-                                                         ?>
+                                                    
+                                             <?php $i++; endforeach  ?>
 
                                                     
                                                 </tbody>
@@ -390,62 +343,9 @@ header("location:index.php?page=login");
 
 </html>
 
-<?php
-include_once 'Public/modals/addrec.php';
-include_once 'Public/modals/editstock.php';
-?>
-
 <script>
 $(document).ready(function() {
 $('#dataTables-example').DataTable({responsive: true});
-
-$(document).on('click', '.approv', function(){
-        var id = $(this).attr("id");
-        var btn_action = 'fetch_single';
-        $.ajax({
-         url:"Public/script/approv.php",
-         method:"POST",
-         data:{id:id,},
-         dataType:"json",
-         success:function(data)
-         {
-          $('#article').val(data.ARTICLE);
-          $('#category_id').val(category_id);
-          $('#category_id').val(category_id);
-          $('#action').val('Edit');
-          $('#btn_action').val("Edit");
-         }
-        })
-       });
-
-$('.view_datas').click(function(){  
-  var Id = $(this).attr("id");  
-$.ajax({  
-  url:"Public/script/viewstock.php",  
-  method:"post",  
-  data:{Id:Id},  
-  success:function(data){  
- $('#stock_detail').html(data);  
- $('#stockModal').modal("show");  
-
-}  
-});  
-});
-//
-$(document).on('click','.submitb',function(){
-    $.ajax({
-            url:"Public/script/editstock.php",
-            type:"post",
-            data:$("#formstock").serialize(),
-            success:function(data){
-            $("#messages").html(data).slideDown();
-            $("#stockModal").modal('hide');
-            
-            }
-   
-});
-    return false;
-}); 
 
 });
 </script>
