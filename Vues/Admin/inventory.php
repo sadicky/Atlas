@@ -321,9 +321,9 @@ header("location:index.php?page=login");
 
                                                         require_once('Model/Admin/connexion.php');
                                                         $db = getConnection();
-                                                        $ret = $db->query("SELECT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
+                                                        $ret = $db->query("SELECT DISTINCT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
                                                         tbl_vente.STATUTV AS STATUTV,tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE FROM tbl_vente,tbl_users 
-                                                        where (DATEV BETWEEN '$fdate' and '$tdate') AND tbl_vente.IDU = tbl_users.ID  ORDER BY ID DESC");
+                                                        where (DATEV BETWEEN '$fdate' and '$tdate') AND tbl_vente.IDU = tbl_users.ID  and tbl_vente_article.IDV=tbl_vente.ID  ORDER BY ID DESC");
                                                         $cnt = 1;
                                                         $ventes = $ret->fetchAll(PDO::FETCH_OBJ);
                                                         foreach ($ventes as $vente) {
@@ -419,9 +419,11 @@ header("location:index.php?page=login");
 
                                                         require_once('Model/Admin/connexion.php');
                                                         $db = getConnection();
-                                                        $ret = $db->query("SELECT DISTINCT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL, tbl_vente.STATUTV AS STATUTV,
-                                                        tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE 
-                                                        FROM tbl_vente,tbl_users WHERE tbl_vente.IDU = tbl_users.ID ORDER BY ID DESC");
+                                                        $ret = $db->query("SELECT DISTINCT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
+                                                         tbl_vente.STATUTV AS STATUTV, tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,
+                                                         tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE FROM tbl_vente,tbl_users,tbl_vente_article
+                                                          WHERE tbl_vente.IDU = tbl_users.ID and tbl_vente_article.IDV=tbl_vente.ID ORDER BY ID DESC");
+
                                                         $cnt = 1;
                                                         $ventes = $ret->fetchAll(PDO::FETCH_OBJ);
                                                         foreach ($ventes as $vente) {
@@ -489,7 +491,87 @@ header("location:index.php?page=login");
             <!-- /#page-wrapper -->
 
         </div>
+<!-- edit order -->
+<div class="modal fade" tabindex="-1" role="dialog" id="paymentOrderModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="glyphicon glyphicon-edit"></i> Modifier le paiement</h4>
+      </div>      
 
+      <div class="modal-body form-horizontal" style="max-height:500px; overflow:auto;" >
+
+      	<div class="paymentOrderMessages"></div>
+
+      	     				 				 
+			  <div class="form-group">
+			    <label for="due" class="col-sm-3 control-label">Montant dû</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" id="due" name="due" disabled="true" />					
+			    </div>
+			  </div> <!--/form-group-->		
+			  <div class="form-group">
+			    <label for="payAmount" class="col-sm-3 control-label">Somme payé</label>
+			    <div class="col-sm-9">
+			      <input type="text" class="form-control" id="payAmount" name="payAmount"/>					      
+			    </div>
+			  </div> <!--/form-group-->		
+			  <div class="form-group">
+			    <label for="clientContact" class="col-sm-3 control-label">Type Paiement</label>
+			    <div class="col-sm-9">
+			      <select class="form-control" name="paymentType" id="paymentType" >
+			      	<option value="">~~SELECT~~</option>
+			      	<option value="cheque">Cheque</option>
+			      	<option value="cash">Cash</option>
+			      	<option value="cc">Credit Card</option>
+			      </select>
+			    </div>
+			  </div> <!--/form-group-->							  
+			  <div class="form-group">
+			    <label for="clientContact" class="col-sm-3 control-label">Statut Paiement</label>
+			    <div class="col-sm-9">
+			      <select class="form-control" name="paymentStatus" id="paymentStatus">
+			      	<option value="">~~SELECT~~</option>
+			      	<option value="total">Total</option>
+			      	<option value="partiel">Partiel</option>
+			      	<option value="dette">Dette</option>
+			      </select>
+			    </div>
+			  </div> <!--/form-group-->							  				  
+      	        
+      </div> <!--/modal-body-->
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="glyphicon glyphicon-remove-sign"></i> Fermer</button>
+        <button type="button" class="btn btn-primary" id="updatePaymentOrderBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-ok-sign"></i> Enregistrer</button>	
+      </div>           
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- /edit order-->
+
+<!-- remove order -->
+<div class="modal fade" tabindex="-1" role="dialog" id="removeOrderModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Annuler la Vente</h4>
+      </div>
+      <div class="modal-body">
+
+      	<div class="removeOrderMessages"></div>
+
+        <p>Voulez-vous vraiment annuler cette vente ?</p>
+      </div>
+      <div class="modal-footer removeProductFooter">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="glyphicon glyphicon-remove-sign"></i> Fermer</button>
+        <button type="button" class="btn btn-primary" id="removeOrderBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-ok-sign"></i> Annuler</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- /remove order-->
 
         <?php
 
@@ -553,6 +635,163 @@ header("location:index.php?page=login");
       }); // /ajax function to fetch the printable order
     } // /if orderId
   }
+
+// remove order from server
+function removeOrder(orderId = null) {
+	if (orderId) {
+		$("#removeOrderBtn").unbind('click').bind('click', function () {
+			$("#removeOrderBtn").button('loading');
+
+			$.ajax({
+				url: 'Public/script/removeOrder.php',
+				type: 'post',
+				data: { orderId: orderId },
+				dataType: 'json',
+				success: function (response) {
+					$("#removeOrderBtn").button('reset');
+
+					if (response.success == true) {
+
+						manageOrderTable.ajax.reload(null, false);
+						// hide modal
+						$("#removeOrderModal").modal('hide');
+						// success messages
+						$("#success-messages").html('<div class="alert alert-success">' +
+							'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+							'<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
+							'</div>');
+
+						// remove the mesages
+						$(".alert-success").delay(500).show(10, function () {
+							$(this).delay(3000).hide(10, function () {
+								$(this).remove();
+							});
+						}); // /.alert	          
+
+					} else {
+						// error messages
+						$(".removeOrderMessages").html('<div class="alert alert-warning">' +
+							'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+							'<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
+							'</div>');
+
+						// remove the mesages
+						$(".alert-success").delay(500).show(10, function () {
+							$(this).delay(3000).hide(10, function () {
+								$(this).remove();
+							});
+						}); // /.alert	          
+					} // /else
+
+				} // /success
+			});  // /ajax function to remove the order
+
+		}); // /remove order button clicked
+
+
+	} else {
+		alert('error! refresh the page again');
+	}
+}
+// /remove order from server
+  
+// Payment ORDER
+function paymentOrder(orderId = null) {
+	if (orderId) {
+		$.ajax({
+			url: 'Public/script/fetchOrderData.php',
+			type: 'post',
+			data: { orderId: orderId },
+			dataType: 'json',
+			success: function (response) {
+
+				// due 
+				$("#due").val(response.order[10]);
+
+				// pay amount 
+				$("#payAmount").val(response.order[10]);
+
+				var paidAmount = response.order[9]
+				var dueAmount = response.order[10];
+				var grandTotal = response.order[8];
+
+				// update payment
+				$("#updatePaymentOrderBtn").unbind('click').bind('click', function () {
+					var payAmount = $("#payAmount").val();
+					var paymentType = $("#paymentType").val();
+					var paymentStatus = $("#paymentStatus").val();
+
+					if (payAmount == "") {
+						$("#payAmount").after('<p class="text-danger">The Pay Amount field is required</p>');
+						$("#payAmount").closest('.form-group').addClass('has-error');
+					} else {
+						$("#payAmount").closest('.form-group').addClass('has-success');
+					}
+
+					if (paymentType == "") {
+						$("#paymentType").after('<p class="text-danger">The Pay Amount field is required</p>');
+						$("#paymentType").closest('.form-group').addClass('has-error');
+					} else {
+						$("#paymentType").closest('.form-group').addClass('has-success');
+					}
+
+					if (paymentStatus == "") {
+						$("#paymentStatus").after('<p class="text-danger">The Pay Amount field is required</p>');
+						$("#paymentStatus").closest('.form-group').addClass('has-error');
+					} else {
+						$("#paymentStatus").closest('.form-group').addClass('has-success');
+					}
+
+					if (payAmount && paymentType && paymentStatus) {
+						$("#updatePaymentOrderBtn").button('loading');
+						$.ajax({
+							url: 'Public/script/editPayment.php',
+							type: 'post',
+							data: {
+								orderId: orderId,
+								payAmount: payAmount,
+								paymentType: paymentType,
+								paymentStatus: paymentStatus,
+								paidAmount: paidAmount,
+								grandTotal: grandTotal
+							},
+							dataType: 'json',
+							success: function (response) {
+								$("#updatePaymentOrderBtn").button('loading');
+
+								// remove error
+								$('.text-danger').remove();
+								$('.form-group').removeClass('has-error').removeClass('has-success');
+
+								$("#paymentOrderModal").modal('hide');
+
+								$("#success-messages").html('<div class="alert alert-success">' +
+									'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+									'<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
+									'</div>');
+
+								// remove the mesages
+								$(".alert-success").delay(500).show(10, function () {
+									$(this).delay(3000).hide(10, function () {
+										$(this).remove();
+									});
+								}); // /.alert	
+
+								// refresh the manage order table
+								manageOrderTable.ajax.reload(null, false);
+
+							} //
+
+						});
+					} // /if
+
+					return false;
+				}); // /update payment			
+
+			} // /success
+		}); // fetch order data
+	} 
+}
         </script>
 
 </body>

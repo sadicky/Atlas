@@ -482,7 +482,7 @@ function paymentOrder(orderId = null) {
 		$("#orderDate").datepicker();
 
 		$.ajax({
-			url: 'public/script/fetchOrderData.php',
+			url: 'Public/script/fetchOrderData.php',
 			type: 'post',
 			data: { orderId: orderId },
 			dataType: 'json',

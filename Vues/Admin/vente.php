@@ -374,7 +374,7 @@ header("location:index.php?page=login");
 <script src="plugins/js/startmin.js"></script>
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-<script type="text/javascript" src="public/ajax/order.js"></script>
+<script type="text/javascript" src="Public/ajax/order.js"></script>
   <!-- ./wrapper -->
 
 </body>
