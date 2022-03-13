@@ -4,7 +4,7 @@
 // 	return $db;
 // }
 function getConnection(){
-	$db=new PDO("mysql:host=localhost;dbname=atlas","root","");
+	$db=new PDO("mysql:host=localhost;dbname=atlas1","root","");
 	return $db; 
 }
 ?>

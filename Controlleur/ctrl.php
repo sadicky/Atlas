@@ -183,3 +183,10 @@ function historicapp(){
 	$getHist= $hist->getHistoricApp();
 	include('Vues/Admin/historicapp.php');
 }
+
+function historicrecm(){
+	require_once('Model/Admin/historic.class.php');
+	$hist= new Historics();
+	$getHistM= $hist->getHistoricRecM();
+	include('Vues/Admin/historicrecm.php');
+}

@@ -12,7 +12,7 @@ $sqte = isset($_POST['sqte']) ? $_POST['sqte'] : 0;
 $id = isset($_POST['id']) ? $_POST['id'] : 0; //iduser
 $iduser = htmlspecialchars(trim($_POST['iduser']));
 
-// Calculs	
+// Calculs	 
 $balance = intval($sqte) + intval($aqte);
 // $balance = 10;
 $date = date('Y-m-d');
@@ -25,7 +25,7 @@ $add = $arts->Approvisionner($balance, $expired, $date, $fab, $iduser, $id);
 if (!empty($add)) {
  echo "<span class='alert alert-success alert-lg col-sm-12'>Ajout reussi avec Succes<button type='button' class='close' data-dismiss='alert'>x</button></span>
        ";
-  echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=depot'</script>"; 
+  echo "<script>window.location.href='https://atlas243.com/index.php?page=depot'</script>"; 
 } else {
   echo "<span class='alert alert-danger alert-lg col-sm-12'>erreur d'insertion <button type='button' class='close' data-dismiss='alert'>x</button></span>";
 }

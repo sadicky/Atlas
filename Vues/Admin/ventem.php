@@ -211,11 +211,17 @@ if (isset($_SESSION['logged'])) { ?>
                if (isset($_SESSION['TYPE'])) {
                    $type=$_SESSION['TYPE'];
                    if($type=="admin" OR $type="gestionnaire de dépôt"){ ?>
-                         <li>
+                            <li>
                 <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                <li>
+                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  </li>
                   <li>
-                <a href="index.php?page=historicapp">Historique d'approvisionnement</a>
+                      <a href="index.php?page=historicrecm">Récquisition Magasin</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicreq">Récquisition Quincaillerie</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -395,7 +401,7 @@ header("location:index.php?page=login");
     if (orderId) {
 
       $.ajax({
-        url: 'Public/script/printOrder.php',
+        url: 'Public/script/printOrderm.php',
         type: 'post',
         data: {
           orderId: orderId
@@ -403,7 +409,7 @@ header("location:index.php?page=login");
         dataType: 'text',
         success: function(response) {
 
-          var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+          var mywindow = window.open('', 'Metropole', 'height=400,width=600');
           mywindow.document.write('<html><head><title>Facture</title>');
           mywindow.document.write('</head><body>');
           mywindow.document.write(response);

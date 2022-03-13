@@ -15,7 +15,7 @@ $caisse = new Caisse();
   $add = $caisse-> setCaisse($client,$tel,$adresse,$motif,$montant,$date,$dateins,$statut,$idu);
   if(!empty($add)){
 	echo "<span class='alert alert-success alert-lg col-sm-12'>Ajout reussi avec Succes<button type='button' class='close' data-dismiss='alert'>x</button></span>";
-	echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=caisseE'</script>"; 
+	echo "<script>window.location.href='https://atlas243.com/index.php?page=caisseE'</script>"; 
 }
   else{
 	  echo "<span class='alert alert-danger alert-lg col-sm-12'>erreur d'insertion <button type='button' class='close' data-dismiss='alert'>x</button></span>";

@@ -5,6 +5,7 @@ class Historics
 {
 	//historic_app
     public $ID_ARTICLE;
+    public $ARTICLE;
     public $PEREMPTION;
     public $QTE;
     public $PAYSFABR;
@@ -39,6 +40,43 @@ class Historics
         }
         return $tbl;
     }
+
+
+    public function setHistoricRecM($ARTICLE,$QTE,$COND,$PEREMPTION,$DATE,$IDCAT,$IDU)
+    {   
+        $this->ARTICLE=$ARTICLE;
+        $this->PEREMPTION=$PEREMPTION;
+        $this->QTE=$QTE;
+        $this->COND=$COND;
+        $this->DATE=$DATE;
+        $this->IDCAT=$IDCAT;
+        $this->IDU=$IDU;
+
+    $db = getConnection();
+    $add1 = $db->prepare("INSERT INTO tbl_historic_appro (ARTICLE,QTE,CONDITIONEMMENT,PEREMPTION,DATERECEIVE,IDCAT,IDUSER	
+    ) VALUES (?,?,?,?,?,?,?)");
+        $addline1 = $add1->execute(array($ARTICLE,$QTE,$COND,$PEREMPTION,date('Y-m-d H:i:s'),$IDCAT,$IDU)) or die(print_r($add1->errorInfo()));
+       
+        return $addline1;
+    }
+
+    public function getHistoricRecM(){
+        $db=getConnection();
+        $sql="SELECT tbl_historic_recm.PEREMPTION as PER,tbl_historic_recm.DATERECEIVE as DATER,
+        tbl_historic_recm.QTE as QTE,tbl_historic_recm.ARTICLE as ARTICLE,
+        tbl_users.NAME as NAME,tbl_categories.CATEGORIE as CATEGORIE,tbl_historic_recm.CONDITIONEMMENT as COND
+         FROM tbl_historic_recm,tbl_users,tbl_categories
+          WHERE tbl_historic_recm.IDUSER=tbl_users.ID
+          AND tbl_historic_recm.IDCAT=tbl_categories.ID";
+        $req=$db->query($sql);
+        $tbl=array();
+        while ($data=$req->fetchObject()) {
+            $tbl[]=$data;
+        }
+        return $tbl;
+    }
+
+
 }
 
 

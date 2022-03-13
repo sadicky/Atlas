@@ -212,10 +212,16 @@ if (isset($_SESSION['logged'])) { ?>
                    $type=$_SESSION['TYPE'];
                    if($type=="admin" OR $type="gestionnaire de dépôt"){ ?>
                          <li>
-                <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-plus fa-fw"></i> Historiques<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                   <li>
-                <a href="index.php?page=historicapp">Historique d'approvisionnement</a>
+                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicrecm">Récquisition Magasin</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicreq">Récquisition Quincaillerie</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -294,7 +300,7 @@ header("location:index.php?page=login");
                                     <div class="panel panel-default">
                                         <div class="panel-heading" align="center" style="color:blue">Rapport de Vente du <?php echo $fdate ?> Au <?php echo $tdate ?>
                                         <div class="pull-right">
-                                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
+                                            <button class="btn btn-danger btn-xs" id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
                                          </div>
                                     </div>
                                     
@@ -326,7 +332,8 @@ header("location:index.php?page=login");
                                                         require_once('Model/Admin/connexion.php');
                                                         $db = getConnection();
                                                         $ret = $db->query("SELECT DISTINCT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
-                                                        tbl_vente.STATUTV AS STATUTV,tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE FROM tbl_vente,tbl_users 
+                                                        tbl_vente.STATUTV AS STATUTV,tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE
+                                                         FROM tbl_vente,tbl_users,tbl_vente_article
                                                         where (DATEV BETWEEN '$fdate' and '$tdate') AND tbl_vente.IDU = tbl_users.ID  and tbl_vente_article.IDV=tbl_vente.ID  ORDER BY ID DESC");
                                                         $cnt = 1;
                                                         $ventes = $ret->fetchAll(PDO::FETCH_OBJ);
@@ -393,7 +400,7 @@ header("location:index.php?page=login");
                                     <div class="panel panel-default">
                                         <div class="panel-heading" align="center" style="color:blue">Rapport de Vente
                                         <div class="pull-right">
-                                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
+                                            <button class="btn btn-danger btn-xs" id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
                                          </div>
                                     </div>
                                         <div class="panel-body">
@@ -436,9 +443,9 @@ header("location:index.php?page=login");
                                                             <tr class="odd gradeX">
                                                                 <td align="center"><b>FACT000<?= $vente->ID ?></b></td>
                                                                 <td><b><?= $vente->CLIENT ?></b></td>
-                                                                <td><?= $vente->MTOTAL ?></td>
-                                                                <td><?= $vente->PAYE ?></td>
-                                                                <td><?= $vente->RESTE ?></td>
+                                                                <td><?= $vente->MTOTAL ?>$</td>
+                                                                <td><?= $vente->PAYE ?>$</td>
+                                                                <td><?= $vente->RESTE ?>$</td>
                                                                 <td><?php // active 
                                                                     if ($vente->STATUTV == 'totalite') {
                                                                         echo "<label class='label label-success'>Totalité</label>";
@@ -604,6 +611,38 @@ header("location:index.php?page=login");
                 $('#dataTables-example').DataTable({
                     responsive: true
                 });
+                
+                           //imprimer
+             
+          $(document).on("click", "#print", function (event) {
+          event.preventDefault();
+      $.ajax({
+        url: 'Public/script/printInv.php',
+        type: 'post',
+        data: {},
+        dataType: 'text',
+        success: function(response) {
+          var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+          mywindow.document.write('<html><head><title>Inventaire</title>');
+          mywindow.document.write('</head><body>');
+          mywindow.document.write(response);
+          mywindow.document.write('</body></html>');
+
+          mywindow.document.close(); // necessary for IE >= 10
+          mywindow.focus(); // necessary for IE >= 10
+          mywindow.resizeTo(screen.width, screen.height);
+          setTimeout(function() {
+            mywindow.print();
+            mywindow.close();
+          }, 1250);
+
+          //mywindow.print();
+          //mywindow.close();
+
+        } // /success function
+      }); // /ajax function to fetch the printable order
+          });
+       
             });
            // print order function
   function printOrder(orderId = null) {

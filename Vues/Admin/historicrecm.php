@@ -1,14 +1,5 @@
-<?php $title = 'Recquisition Quincaillerie';
-require_once('Model/Admin/connexion.php');
-$id =$_GET['id'];
-$db = getConnection();
-$sql="SELECT * FROM tbl_articles WHERE ID='$id'";
-$req=$db->query($sql);
-$g=$req->fetch(PDO::FETCH_OBJ);
-$art = new Articles();
-$data = $art->stockQId($id);
-foreach ($data as $v):?>
-
+<?php $title = "Historique de la Recquisition du Magasin"; ?>
+<!DOCTYPE html>
 <html lang="en">
 
     <meta charset="utf-8">
@@ -74,7 +65,7 @@ if (isset($_SESSION['logged'])) { ?>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
-        </button>
+        </button> 
 
         <ul class="nav navbar-right navbar-top-links">
           <li class="dropdown">
@@ -220,7 +211,7 @@ if (isset($_SESSION['logged'])) { ?>
                if (isset($_SESSION['TYPE'])) {
                    $type=$_SESSION['TYPE'];
                    if($type=="admin" OR $type="gestionnaire de dépôt"){ ?>
-                            <li>
+                         <li>
                 <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                 <li>
@@ -265,67 +256,79 @@ if (isset($_SESSION['logged'])) { ?>
 header("location:index.php?page=login");
 } ?>
 
-      <div id="page-wrapper">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-12">
-              <h1 class="page-header"><?= $title ?></h1>
-            </div>
-            <div class='col-sm-12' id="message"></div>
-            <!-- /.col-lg-12 -->
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                   <?=$title?>
-                  </div>
-                  <!-- /.panel-heading -->
-                  <div class="panel-body">
-                    <!-- /.col-lg-12 -->
-
-                    <form method="post" id="formulaire">
-
-                      <div class="row">
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label>Produit</label>
-                            <input type="hidden" name="id" id="id" value="<?=$v->ID?>">
-                            <input readonly type="text" name="article" id="article" class="form-control" value="<?=$v->ARTICLE?>" placeholder="DCU du medicament Ici">
-                         </div>
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1 class="page-header"><?= $title ?></h1>
                         </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label>Stock Disponible</label>
-                              <input readonly type="number" name="sqte" id="sqte" value="<?=$g->QTE?>" class="form-control">
-                          </div>
+                        <!-- /.col-lg-12 -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="messages"></div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                   <?= $title ?>
+                        <div class="pull-right"> 
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button> 
+                
+                          
+                            
                         </div>
-                        <div class="col-md-3">
-                          <div class="form-group">
-                            <label>Quantite : </label>
-                            <input value="<?=$v->QTE?>" type="hidden" name="qqte" id="qqte">
-                            <input type="number" name="aqte" id="aqte" class="form-control" placeholder="Quantity" required>
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="form-group"> 
-                            <label>&nbsp; </label><br>
-                            <button type="submit" class="btn btn-primary btn-block pull-right">Recquisitionner</button>
-                         </div>
-                        </div>
+                                    </div>
+                                    <!-- /.panel-heading -->
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                                <thead>
+                                                  <tr>
+                                                      <th>ID</th>
+                                                      <th>ARTICLE</th>
+                                                      <th>CATEGORIE</th>
+                                                      <th>CONDITIONEMMENT</th>
+                                                      <th>PEREMPTION</th>
+                                                      <th>QUANTITE</th>
+                                                      <th>DATE DE LA RECQUISITION</th>
+                                                      <th>PAR</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                $i=1;
+                                                foreach($getHistM as $d): ?>
+                                                    <tr>
+                                                    <td><?=$i?></td>
+                                                    <td><?=$d->ARTICLE?></td>
+                                                    <td><?=$d->CATEGORIE?></td>
+                                                    <td><?=$d->COND?></td>
+                                                    <td><?=$d->PER?></td>
+                                                    <td><?=$d->QTE?></td>
+                                                    <td><?=$d->DATER?></td>
+                                                    <td><?=$d->NAME?></td>
+                                                    </tr>
+                                                    
+                                             <?php $i++; endforeach  ?>
+
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                                <!-- /.panel -->
+                            </div>
+                            <!-- /.col-lg-12 -->
                         </div>
 
-                        <!-- /.col -->
-                      </div>
-                    </form>
-
-                  </div>
-
+                    </div>
+                    <!-- /.container-fluid -->
                 </div>
-                <!-- /.container-fluid -->
-              </div>
-              <!-- /#page-wrapper -->
+                <!-- /#page-wrapper -->
 
             </div>
+
+
 
             <!-- jQuery -->
             <script src="plugins/js/jquery.min.js"></script>
@@ -343,43 +346,16 @@ header("location:index.php?page=login");
             <!-- Custom Theme JavaScript -->
             <script src="plugins/js/startmin.js"></script>
 
-            <!-- /.content-wrapper -->
-            <?php  endforeach ?>
-            
-          
-          </div>
-          <!-- ./wrapper -->
+            <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+
 
 </body>
-<script>
-  $(document).ready(function() {
-    $('#dataTables-example').DataTable({
-      responsive: true
-    });
-    
-    $("#formulaire").submit(function (event) {
-        event.preventDefault();
-        var aqte =  $("#aqte").val();
-        var sqte =  $("#sqte").val();
-        var qqte =  $("#qqte").val();
-        var id = $("#id").val();
-        $.ajax({
-            url: "Public/script/recquisq.php",
-            method: "POST",
-            data: {
-                id:id,
-                aqte: aqte,
-                qqte: qqte,
-                sqte: sqte
-            },
-            success: function (donnees) {
-                $('#message').html(donnees).slideDown();
-                $("#formulaire")[0].reset();
-            }
-        });
-    });
-
-  });
-</script>
 
 </html>
+
+<script>
+$(document).ready(function() {
+$('#dataTables-example').DataTable({responsive: true});
+
+});
+</script>

@@ -214,8 +214,14 @@ if (isset($_SESSION['logged'])) { ?>
                          <li>
                 <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                <li>
+                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  </li>
                   <li>
-                <a href="index.php?page=historicapp">Historique d'approvisionnement</a>
+                      <a href="index.php?page=historicrecm">Récquisition Magasin</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicreq">Récquisition Quincaillerie</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -264,7 +270,7 @@ header("location:index.php?page=login");
                                     <div class="panel-heading">
                                    <?= $title ?>
                         <div class="pull-right"> 
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button> 
+                            <button class="btn btn-danger btn-xs" id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button> 
                 
                           
                             
@@ -346,6 +352,40 @@ header("location:index.php?page=login");
 <script>
 $(document).ready(function() {
 $('#dataTables-example').DataTable({responsive: true});
+
+
+          //imprimer
+             
+          $(document).on("click", "#print", function (event) {
+          event.preventDefault();
+      $.ajax({
+        url: 'Public/script/printHAp.php',
+        type: 'post',
+        data: {},
+        dataType: 'text',
+        success: function(response) {
+          var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+          mywindow.document.write('<html><head><title>Approvisionnements</title>');
+          mywindow.document.write('</head><body>');
+          mywindow.document.write(response);
+          mywindow.document.write('</body></html>');
+
+          mywindow.document.close(); // necessary for IE >= 10
+          mywindow.focus(); // necessary for IE >= 10
+          mywindow.resizeTo(screen.width, screen.height);
+          setTimeout(function() {
+            mywindow.print();
+            mywindow.close();
+          }, 1250);
+
+          //mywindow.print();
+          //mywindow.close();
+
+        } // /success function
+      }); // /ajax function to fetch the printable order
+          });
+       
+
 
 });
 </script>

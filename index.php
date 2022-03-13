@@ -105,6 +105,10 @@ if(isset($_SESSION['TYPE'])){
 	{
 		historicapp();
 	}
+	else if($_GET['page']=='historicrecm')
+	{
+		historicrecm();
+	}
 	else{
 		home();
 	}	

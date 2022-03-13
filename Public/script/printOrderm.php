@@ -50,13 +50,13 @@ $orderItemResult = $connect->query($orderItemSql);
                   </tr>
                   <tr></tr>
                   <tr>
-                     <td colspan="3" style="font-style: italic;font-weight: 600;text-decoration: underline;font-size: 25px;">Atlas Inc.</td>
+                     <td colspan="3" style="font-style: italic;font-weight: 600;text-decoration: underline;font-size: 25px;">Quincaillerie Metropole</td>
                   </tr>
                   <tr>
                      <td colspan="3" >Boulevard du 30 juin,</td>
                   </tr>
                   <tr>
-                     <td colspan="3" >Kalemi</td>
+                     <td colspan="3" >Kisangani</td></td>
                   </tr>
                   <tr>
                      <td colspan="3" >Tel:.+243 853775643/998248943</td>

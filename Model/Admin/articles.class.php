@@ -157,7 +157,10 @@ Class Articles
     public function getArticlesId()
     {
         $db = getConnection();
-        $statement = $db->prepare("SELECT tbl_articles.ID,tbl_articles.ARTICLE,tbl_articles.QTE,tbl_articles.PRIX,tbl_articles.PEREMPTION,tbl_articles.STATUT,tbl_categories.CATEGORIE FROM tbl_articles,tbl_categories WHERE  tbl_articles.IDCAT=tbl_categories.ID");
+        $statement = $db->prepare("SELECT tbl_articles.ID,tbl_users.NAME as USER,tbl_articles.CONDITIONEMMENT,tbl_articles.DATECREAT,tbl_articles.ARTICLE,tbl_articles.QTE,tbl_articles.PRIX,tbl_articles.PEREMPTION,tbl_articles.STATUT,tbl_categories.CATEGORIE
+         FROM tbl_articles,tbl_categories,tbl_users
+         WHERE  tbl_articles.IDCAT=tbl_categories.ID
+         AND tbl_users.ID = tbl_articles.IDUSER");
         $statement->execute();
         $tbP = array();
         while($data =  $statement->fetchObject()){
@@ -208,7 +211,12 @@ Class Articles
       public function getQ()
       {
           $db = getConnection();
-          $statement = $db->prepare("SELECT  tbl_stockq.ID as ID,tbl_stockq.ARTICLE as ARTICLE,tbl_stockq.QTE as QTE,tbl_stockq.PRIX AS PRIX,tbl_stockq.PEREMPTION AS PEREMPTION,tbl_stockq.STATUT AS STATUT,tbl_categories.CATEGORIE AS CATEGORIE FROM tbl_stockq,tbl_categories WHERE  tbl_stockq.IDCAT=tbl_categories.ID ");
+          $statement = $db->prepare("SELECT tbl_stockq.ID as ID,tbl_stockq.ARTICLE as ARTICLE,tbl_stockq.QTE as QTE,
+          tbl_stockq.PRIX AS PRIX,tbl_stockq.PEREMPTION AS PEREMPTION,tbl_stockq.STATUT AS STATUT,
+          tbl_categories.CATEGORIE AS CATEGORIE,tbl_users.NAME AS NAME,tbl_stockq.DATERECEIVE as DATER
+          FROM tbl_stockq,tbl_categories,tbl_users
+         WHERE  tbl_stockq.IDCAT=tbl_categories.ID
+         AND tbl_users.ID = tbl_stockq.IDUSER");
           $statement->execute();
           $tbP = array();
           while($data =  $statement->fetchObject()){
@@ -221,7 +229,12 @@ Class Articles
       public function getM()
       {
           $db = getConnection();
-          $statement = $db->prepare("SELECT  tbl_stockm.ID,tbl_stockm.ARTICLE,tbl_stockm.QTE,tbl_stockm.PRIX,tbl_stockm.PEREMPTION,tbl_stockm.STATUT,tbl_categories.CATEGORIE FROM tbl_stockm,tbl_categories WHERE  tbl_stockm.IDCAT=tbl_categories.ID ");
+          $statement = $db->prepare("SELECT tbl_stockm.ID as ID,tbl_stockm.ARTICLE as ARTICLE,tbl_stockm.QTE as QTE,
+          tbl_stockm.PRIX AS PRIX,tbl_stockm.PEREMPTION AS PEREMPTION,tbl_stockm.STATUT AS STATUT,
+          tbl_categories.CATEGORIE AS CATEGORIE,tbl_users.NAME AS NAME,tbl_stockm.DATERECEIVE as DATER
+          FROM tbl_stockm,tbl_categories,tbl_users
+         WHERE  tbl_stockm.IDCAT=tbl_categories.ID
+         AND tbl_users.ID = tbl_stockm.IDUSER ");
           $statement->execute();
           $tbP = array();
           while($data =  $statement->fetchObject()){

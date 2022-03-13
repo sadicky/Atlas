@@ -28,7 +28,7 @@ else if ($sqte > 0) {
   $add2 = $arts->ApprovRecq($balance, $idu, $id);
   $add = $arts->recquisQ($Quinc_Qty, $date, $idu, $id);
   if ($add2 > 0) {
-    echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=stock_quincailleries'</script>"; 
+    echo "<script>window.location.href='https://atlas243.com/index.php?page=stock_quincailleries'</script>"; 
    echo "<span class='alert alert-success alert-lg col-sm-12'>Le stock de la Quincaillerie a été approvisionner avec succes<button type='button' class='close' data-dismiss='alert'>x</button></span>
          ";
   }  else {
