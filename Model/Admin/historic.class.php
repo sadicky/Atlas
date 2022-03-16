@@ -30,7 +30,7 @@ class Historics
 
     public function getHistoricApp(){
         $db=getConnection();
-        $sql="SELECT tbl_historic_appro.PEREMPTION as PER,tbl_historic_appro.DATE_APP as DATEA,tbl_historic_appro.QTE as QTE,tbl_historic_appro.PAYSFABR as PAYSF,tbl_articles.ARTICLE as ARTICLE,tbl_users.NAME as NAME
+        $sql="SELECT tbl_historic_appro.PEREMPTION as PER,tbl_historic_appro.DATE_APP as DATE_APP,tbl_historic_appro.QTE as QTE,tbl_historic_appro.PAYSFABR as PAYSF,tbl_articles.ARTICLE as ARTICLE,tbl_users.NAME as NAME
          FROM tbl_historic_appro,tbl_articles,tbl_users WHERE tbl_historic_appro.ID_ARTICLE=tbl_articles.ID AND tbl_historic_appro.ID_USER=tbl_users.ID";
         $req=$db->query($sql);
         $tbl=array();

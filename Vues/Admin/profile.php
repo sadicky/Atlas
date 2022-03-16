@@ -6,7 +6,7 @@ $db=getConnection();
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
- <link rel="shortcut icon" href="public/Images/logo.png" type="image/x-icon"> 
+ <link rel="shortcut icon" href="Public/Images/logo.png" type="image/x-icon"> 
 <meta name="description" content="Atlas">
 <meta name="author" content="SpaceLine">
 
@@ -276,28 +276,34 @@ header("location:index.php?page=login");
                                           <div class="col-lg-8">
                                               <?php 
                                       if ($_SESSION['ID']) { ?>
-                                         <form method="POST" class="form" id="formprofile">
-                                           <input type="hidden" name="id" class="form-control" value="<?=$_SESSION['ID'] ?>">
-                                           <div class="form-group">
-                                               <label>NOM</label>
-                                               <input type="text" name="name" id="name" class="form-control" value="<?=$_SESSION['NAME'] ?>" >
-                                           </div> 
-                                           <div class="form-group">
-                                               <label>ADRESSE MAIL</label>
-                                               <input type="email" name="email" id="email" class="form-control" value="<?=$_SESSION['EMAIL'] ?>" >
-                                           </div> 
-                                           <div class="form-group">
-                                               <label>FONCTION</label>
-                                               <input  readonly class="form-control" value="<?=$_SESSION['TYPE'] ?>" >
-                                           </div> 
-                                            <div>
-                                                <button type="submit" class="btn btn-info submitb">Valider</button>
-                                            </div>
-                                        </form>
+                                          <table class="table table-bodered">
+                                            <tr>
+                                              <td>Nom</td>
+                                              <td><?=$_SESSION['NAME']?></td>
+                                            </tr>
+                                            <tr>
+                                              <td>ADRESSE MAIL</td>
+                                              <td><?=$_SESSION['EMAIL']?></td>
+                                            </tr>
+                                            <tr>
+                                              <td>FONCTION</td>
+                                              <td><?=$_SESSION['TYPE']?></td>
+                                            </tr>
+                                            <tr>
+                                              <td>
+                                              <button 
+                                              class='btn btn-info  view_data' 
+                                              id="<?=$_SESSION['ID']?>" title='Modification'>
+                                              <span class='glyphicon glyphicon-edit'></span>
+                                            </button>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                          <div id="messages"></div>
                                        <?php  }
                                          ?>
                                           </div>
-                                          <div class="col-lg-4">
+                                          <!-- <div class="col-lg-4">
                                               <div class="panel panel-default">
                                                 <div class="panel-heading">Editer le mot de passe</div>
                                                   <div class="panel-body">
@@ -314,7 +320,8 @@ header("location:index.php?page=login");
                                                      </form> 
                                                   </div>
                                               </div>
-                                          </div>
+                                          </div> -->
+
                                       </div>
                                     </div>
                                     <!-- /.panel-body -->
@@ -330,7 +337,9 @@ header("location:index.php?page=login");
                 <!-- /#page-wrapper -->
 
             </div>
-
+<?php
+include_once 'Public/modals/editprofile.php';
+?>
 
 
             <!-- jQuery -->
@@ -359,17 +368,34 @@ header("location:index.php?page=login");
 $(document).ready(function() {
  $('#dataTables-example').DataTable({responsive: true});
 
+ $('.view_data').click(function(){  
+  var Id = $(this).attr("id");  
+$.ajax({  
+  url:"Public/script/viewprofbeforedit.php",  
+  method:"post",  
+  data:{Id:Id},  
+  success:function(data){  
+ $('#prof_detail').html(data);  
+ $('#profModal').modal("show");  
+
+}  
+});  
+});
+//
 $(document).on('click','.submitb',function(){
     $.ajax({
-            url:"Public/script/editprofile.php",
+            url:"Public/script/editprof.php",
             type:"post",
-            data:$("#formprofile").serialize(),
+            data:$("#formeditprof").serialize(),
             success:function(data){
             $("#messages").html(data).slideDown();
+            $("#profModal").modal('hide');
+            
             }
    
 });
     return false;
-});
+}); 
+
 });
  </script>

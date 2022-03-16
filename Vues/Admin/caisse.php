@@ -35,7 +35,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Inventory Management System">
-     <link rel="shortcut icon" href="public/Images/logo.png" type="image/x-icon"> 
+     <link rel="shortcut icon" href="Public/Images/logo.png" type="image/x-icon"> 
         <meta name="author" content="SpaceLine">
 
         <title><?=$title?></title>
@@ -342,21 +342,21 @@ header("location:index.php?page=login");
 					<div class="panel panel-default">
 						<?php
 						$ydate = date('Y-m-d', strtotime("-1 days"));
-						$sql="select sum(MTOTAL)  as TOTAL from tbl_vente WHERE DATEV='$ydate';";
+						$sql="SELECT sum(MTOTAL)  as TOTAL FROM tbl_vente WHERE DATEV='$ydate';";
 						$req=$db->query($sql);
 						$req->execute();
 						$g=$req->fetch(PDO::FETCH_OBJ);
 						$sum_yesterday = $g->TOTAL;
 
 						//Autres
-						$sqlo="select sum(MONTANT)  as TOTAL from tbl_other_entry WHERE DATE='$ydate';";
+						$sqlo="SELECT sum(MONTANT)  as TOTAL FROM tbl_other_entry WHERE DATE='$ydate';";
 						$reqo=$db->query($sqlo);
 						$reqo->execute();
 						$go=$reqo->fetch(PDO::FETCH_OBJ);
 						$sum_yesterdayo = $go->TOTAL;
 						
 						//depense
-						$sql1="select sum(MONTANT)  as TOTAL from tbl_depenses WHERE DATE='$ydate';";
+						$sql1="SELECT sum(MONTANT)  as TOTAL FROM tbl_depenses WHERE DATE='$ydate';";
 						$req1=$db->query($sql1);
 						$req1->execute();
 						$g1=$req1->fetch(PDO::FETCH_OBJ);
@@ -595,6 +595,6 @@ header("location:index.php?page=login");
 };
  </script>
   <!-- ./wrapper -->
-
+  
 </body>
 </html>

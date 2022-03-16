@@ -29,7 +29,7 @@ $data2=$sql2->execute(array($article,$prix,$cond,$cat,$id));
 /*----------------------------------------------------------*/
 if($data OR $data1 OR $data2){
  echo "<strong style='color:green;'>L'article est modifié avec succes</strong>";
- echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=articles'</script>"; 
+ echo "<script>window.location.href='https://atlas243.com/index.php?page=articles'</script>"; 
 }else{
 echo "<strong style='color:red;'>Erreur de la modification d'un article</strong>";
 }

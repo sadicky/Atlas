@@ -29,6 +29,7 @@ if(empty($_POST['Id'])){
 		echo "
 		<strong style='color: green;'>Succes:</strong>  le stock ".$data1['QTE']." est modifié avec succes .
 		";
+	 echo "<script>window.location.href='https://atlas243.com/index.php?page=depot'</script>";
 	  }else{
 		echo '
 		<strong style="color: red;">Erreur 401:</strong> article existe deja.

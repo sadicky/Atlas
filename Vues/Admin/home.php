@@ -1,5 +1,5 @@
 <?php $title = 'Tableau de bord';
-include 'public/includes/header.php';
+// include 'public/includes/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,10 +8,11 @@ include 'public/includes/header.php';
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="public/Images/logo.png" type="image/x-icon">
+  <link rel="shortcut icon" href="Public/Images/logo.png" type="image/x-icon">
   <meta name="description" content="Atlas">
   <meta name="author" content="SpaceLine">
-
+  <title><?= $title ?></title>
+  
   <!-- Bootstrap Core CSS -->
   <link href="plugins/css/bootstrap.min.css" rel="stylesheet">
 

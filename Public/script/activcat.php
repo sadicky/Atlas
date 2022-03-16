@@ -7,9 +7,10 @@ if($id)
 {
     $delete = $cat->activCat($id);
 	if($delete){
-        echo "<script>
-        window.location.href=http://atlas1.epizy.com/atlasLines/index.php?page=categories
-        </script>";
+        echo '
+		<strong style="color: green;">Succes:</strong> avec succes .
+		';
+		echo "<script>window.location.href='https://atlas243.com/index.php?page=categories'</script>";
    }else{echo "non ajoute";}
 }
 	

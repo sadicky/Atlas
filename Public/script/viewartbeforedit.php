@@ -47,7 +47,7 @@ function getCategories()
                         <option value="Carton">Carton</option>
                         <option value="Paquet">Paquet</option>
                         <option value="Sac">Sac</option>
-                        <option value="Autres">Autre</option>
+                        <!-- <option value="Autres">Autre</option> -->
                       </select>
 					 </div>
       		</div>

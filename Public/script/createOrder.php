@@ -70,7 +70,7 @@ if($_POST) {
 	$valid['success'] = true;
 	$valid['messages'] = "Successfully Added";
 
-	echo "<script>window.location.href='http://atlas1.epizy.com/index.php?page=vente'</script>"; 
+	echo "<script>window.location.href='https://atlas243.com/index.php?page=vente'</script>"; 
 	echo json_encode($valid);
 	
  

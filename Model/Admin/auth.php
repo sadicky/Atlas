@@ -38,7 +38,7 @@ if(empty($_POST['EMAIL'])){
       $msg="<strong style='color:red'>Error 403</strong>: L'adresse mail et le mot de passe sont incorrect ";
     }
   }else{
-      $msg="Error 403: ";
+    $msg="<strong style='color:red'>Error 403</strong>: L'adresse mail et le mot de passe sont incorrect ";
   }
 }
 
@@ -47,7 +47,7 @@ Email 'carolle@gmail.com'
 Mot de passe '718930b5'
 ---------------------
 Email 'dev@gmail.com'
-Mot de passe '5df7791d'
+Mot de passe ''
 
 */ 
 ?>
