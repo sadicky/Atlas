@@ -105,6 +105,14 @@ if(isset($_SESSION['TYPE'])){
 	{
 		historicapp();
 	}
+	else if($_GET['page']=='historicrecm')
+	{
+		historicrecm();
+	}
+	else if($_GET['page']=='historicreq')
+	{
+		historicrecq();
+	}
 	else{
 		home();
 	}	
@@ -208,6 +216,10 @@ else{
 	{
 		epuise();
 	}
+	else if($_GET['page']=='historicreq')
+	{
+		historicrecq();
+	}
 	else{
 		home();
 	}	
@@ -260,6 +272,10 @@ else{
 	else if($_GET['page']=='epuise')
 	{
 		epuise();
+	}
+	else if($_GET['page']=='historicrecm')
+	{
+		historicrecm();
 	}
 	else{
 		home();

@@ -135,14 +135,14 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php 
                    if ($type=="quincaillerier" OR $type=="admin") { ?>
                   <li>
-                    <a href="index.php?page=stock_quincailleries">Quincaillerie</a>
+                    <a href="index.php?page=stock_quincailleries">Métropole</a>
                   </li>
                  <?php  }
                    ?>
                   <?php 
                   if ($type=="magasinier" OR $type=="admin") { ?>
                     <li>
-                    <a href="index.php?page=stock_magasin">Magasin</a>
+                    <a href="index.php?page=stock_magasin">Atlas</a>
                   </li>
                  <?php }
                    ?>
@@ -162,14 +162,14 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php 
                    if ($type=="quincaillerier" OR $type=="admin") { ?>
                   <li>
-                      <a href="index.php?page=vente">Quincaillerie</a>
+                      <a href="index.php?page=vente">Métropole</a>
                   </li>
                  <?php  }
                    ?>
                   <?php 
                   if ($type=="magasinier" OR $type=="admin") { ?>
                     <li>
-                    <a href="index.php?page=ventem">Magasin</a>
+                    <a href="index.php?page=ventem">Atlas</a>
                   </li>
                  <?php }
                    ?>
@@ -218,10 +218,20 @@ if (isset($_SESSION['logged'])) { ?>
               <?php 
                if (isset($_SESSION['TYPE'])) {
                    $type=$_SESSION['TYPE'];
-                   if($type=="admin"){ ?>
-                    <li>
-                <a href="#"><i class="fa fa-plus fa-fw"></i> Historique</a>
-              
+                   if($type=="admin" OR $type="gestionnaire de dépôt"){ ?>
+                         <li>
+                <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                <li>
+                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicrecm">Récquisition Atlas</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicreq">Récquisition Métropole</a>
+                  </li>
+                </ul>
                 <!-- /.nav-second-level -->
               </li>
                   <?php }
@@ -335,7 +345,7 @@ header("location:index.php?page=login");
                             </div>
                             </td>
                           <td style="padding-left:20px;">			  					
-                            <input type="text" name="rate[]" id="rate<?=$x?>" autocomplete="off" disabled="true" class="form-control" />			  					
+                            <input type="text" name="rate[]" id="rate<?=$x?>" autocomplete="off" onkeyup="getTotal(<?php echo $x ?>)" class="form-control" />			  					
                             <input type="hidden" name="rateValue[]" id="rateValue<?php echo $x; ?>" autocomplete="off" class="form-control" />			  					
                           </td>
                           <td style="padding-left:20px;">
@@ -735,7 +745,7 @@ if (row) {
           '</div>' +
           '</td>' +
           '<td style="padding-left:20px;">' +
-          '<input type="text" name="rate[]" id="rate' + count + '" autocomplete="off" disabled="true" class="form-control" />' +
+          '<input type="text" name="rate[]" id="rate' + count + '" autocomplete="off" onkeyup="getTotal(' + count + ')" class="form-control" />' +
           '<input type="hidden" name="rateValue[]" id="rateValue' + count + '" autocomplete="off" class="form-control" />' +
           '</td>' +
           '<td style="padding-left:20px;">' +

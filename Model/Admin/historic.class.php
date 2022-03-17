@@ -5,6 +5,7 @@ class Historics
 {
 	//historic_app
     public $ID_ARTICLE;
+    public $ARTICLE;
     public $PEREMPTION;
     public $QTE;
     public $PAYSFABR;
@@ -39,6 +40,51 @@ class Historics
         }
         return $tbl;
     }
+
+
+    public function setHistoricRecM($ARTICLE,$QTE,$COND,$PEREMPTION,$DATE,$IDCAT,$IDU)
+    {   
+        $this->ARTICLE=$ARTICLE;
+        $this->PEREMPTION=$PEREMPTION;
+        $this->QTE=$QTE;
+        $this->COND=$COND;
+        $this->DATE=$DATE;
+        $this->IDCAT=$IDCAT;
+        $this->IDU=$IDU;
+
+    $db = getConnection();
+    $add1 = $db->prepare("INSERT INTO tbl_historic_appro (ARTICLE,QTE,CONDITIONEMMENT,PEREMPTION,DATERECEIVE,IDCAT,IDUSER	
+    ) VALUES (?,?,?,?,?,?,?)");
+        $addline1 = $add1->execute(array($ARTICLE,$QTE,$COND,$PEREMPTION,date('Y-m-d H:i:s'),$IDCAT,$IDU)) or die(print_r($add1->errorInfo()));
+       
+        return $addline1;
+    }
+
+    public function getHistoricRecM(){
+        $db=getConnection();
+        $sql="SELECT tbl_users.NAME as user,tbl_articles.ARTICLE as art,tbl_historic_stockm.QTE as qt,tbl_historic_stockm.DATE_REQ as dte FROM tbl_historic_stockm,tbl_users,tbl_articles 
+        WHERE tbl_historic_stockm.ID_USER=tbl_users.ID AND tbl_historic_stockm.ID_ART=tbl_articles.ID";
+        $req=$db->query($sql);
+        $tbl=array();
+        while($d=$req->fetchObject()){
+             $tbl[]=$d;
+        }
+        return $tbl;
+    }
+
+    public function getHistoricRecQ(){
+        $db=getConnection();
+        $sql="SELECT tbl_users.NAME as user,tbl_articles.ARTICLE as art,tbl_historic_stockq.QTE as qt,tbl_historic_stockq.DATE_REQ as dte FROM tbl_historic_stockq,tbl_users,tbl_articles 
+        WHERE tbl_historic_stockq.ID_USER=tbl_users.ID AND tbl_historic_stockq.ID_ART=tbl_articles.ID";
+        $req=$db->query($sql);
+        $tbl=array();
+        while($d=$req->fetchObject()){
+             $tbl[]=$d;
+        }
+        return $tbl;
+    }
+
+
 }
 
 

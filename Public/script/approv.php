@@ -12,7 +12,7 @@ $sqte = isset($_POST['sqte']) ? $_POST['sqte'] : 0;
 $id = isset($_POST['id']) ? $_POST['id'] : 0; //iduser
 $iduser = htmlspecialchars(trim($_POST['iduser']));
 
-// Calculs	
+// Calculs	 
 $balance = intval($sqte) + intval($aqte);
 // $balance = 10;
 $date = date('Y-m-d');

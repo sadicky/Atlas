@@ -11,7 +11,9 @@ $balance = intval($sqte) - intval($aqte);
 $Quinc_Qty= intval($aqte) + intval($qqte);
 // $balance = 10;
 $date = date('Y-m-d H:i:s');
-$idu = 13;
+$idu = htmlspecialchars(trim($_POST['idu']));
+// $idu = $_SESSION['ID'];
+
 $add = null;
 // var_dump($Quinc_Qty);die();
 if ($sqte <= 0) {
@@ -27,9 +29,10 @@ if ($sqte <= 0) {
 else if ($sqte > 0) {
   $add2 = $arts->ApprovRecq($balance, $idu, $id);
   $add = $arts->recquisQ($Quinc_Qty, $date, $idu, $id);
+  $add3 = $arts->setHistoricReqMetropole($id,$aqte,$date,$idu);
   if ($add2 > 0) {
     echo "<script>window.location.href='https://atlas243.com/index.php?page=stock_quincailleries'</script>"; 
-   echo "<span class='alert alert-success alert-lg col-sm-12'>Le stock de la Quincaillerie a été approvisionner avec succes<button type='button' class='close' data-dismiss='alert'>x</button></span>
+   echo "<span class='alert alert-success alert-lg col-sm-12'>Le stock de Métropole a été approvisionner avec succes<button type='button' class='close' data-dismiss='alert'>x</button></span>
          ";
   }  else {
     echo "<span class='alert alert-danger alert-lg col-sm-12'>erreur d'insertion <button type='button' class='close' data-dismiss='alert'>x</button></span>";

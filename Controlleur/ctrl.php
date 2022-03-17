@@ -183,3 +183,17 @@ function historicapp(){
 	$getHist= $hist->getHistoricApp();
 	include('Vues/Admin/historicapp.php');
 }
+
+function historicrecm(){
+	require_once('Model/Admin/historic.class.php');
+	$hist= new Historics();
+	$atlash= $hist->getHistoricRecM();
+	include('Vues/Admin/historicrecm.php');
+}
+
+function historicrecq(){
+	require_once('Model/Admin/historic.class.php');
+	$hist= new Historics();
+	$metropoleh= $hist->getHistoricRecQ();
+	include('Vues/Admin/historicrecq.php');
+}

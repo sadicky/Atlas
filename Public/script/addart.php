@@ -64,7 +64,8 @@ $iduser=isset($_POST['iduser'])?$_POST['iduser']:"";
   $add=$arts->setArticle($article,$qte,$prix,$cond,$expired,$fab,$montant,$stock,$dateins,$statut,$cat,$iduser);
   if(!empty($add)){
   echo "<span class='alert alert-success alert-lg col-sm-12'>Ajout reussi avec Succes<button type='button' class='close' data-dismiss='alert'>x</button></span>";  
-  echo "<script>window.location.href='https://atlas243.com/index.php?page=articles'</script>";
+  // echo "<script>window.location.href='localhost/atlaslines/index.php?page=articles'</script>"; 
+  echo "<script>window.location.href='https://atlas243.com/index.php?page=articles'</script>"; 
   }
   else{
     echo "<span class='alert alert-danger alert-lg col-sm-12'>erreur d'insertion <button type='button' class='close' data-dismiss='alert'>x</button></span>";

@@ -1,5 +1,4 @@
 <?php $title = 'Tableau de bord';
-// include 'public/includes/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +10,7 @@
   <link rel="shortcut icon" href="Public/Images/logo.png" type="image/x-icon">
   <meta name="description" content="Atlas">
   <meta name="author" content="SpaceLine">
-  <title><?= $title ?></title>
+  <title>Tableau de bord</title>
   
   <!-- Bootstrap Core CSS -->
   <link href="plugins/css/bootstrap.min.css" rel="stylesheet">
@@ -129,14 +128,14 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php 
                    if ($type=="quincaillerier" OR $type=="admin") { ?>
                   <li>
-                    <a href="index.php?page=stock_quincailleries">Quincaillerie</a>
+                    <a href="index.php?page=stock_quincailleries">Métropole</a>
                   </li>
                  <?php  }
                    ?>
                   <?php 
                   if ($type=="magasinier" OR $type=="admin") { ?>
                     <li>
-                    <a href="index.php?page=stock_magasin">Magasin</a>
+                    <a href="index.php?page=stock_magasin">Atlas</a>
                   </li>
                  <?php }
                    ?>
@@ -156,14 +155,14 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php 
                    if ($type=="quincaillerier" OR $type=="admin") { ?>
                   <li>
-                      <a href="index.php?page=vente">Quincaillerie</a>
+                      <a href="index.php?page=vente">Métropole</a>
                   </li>
                  <?php  }
                    ?>
                   <?php 
                   if ($type=="magasinier" OR $type=="admin") { ?>
                     <li>
-                    <a href="index.php?page=ventem">Magasin</a>
+                    <a href="index.php?page=ventem">Atlas</a>
                   </li>
                  <?php }
                    ?>
@@ -216,8 +215,14 @@ if (isset($_SESSION['logged'])) { ?>
                          <li>
                 <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                <li>
+                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  </li>
                   <li>
-                <a href="index.php?page=historicapp">Historique d'approvisionnement</a>
+                      <a href="index.php?page=historicrecm">Récquisition Atlas</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicreq">Récquisition Métropole</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->

@@ -1,4 +1,4 @@
-<?php $title = 'Recquisition Quincaillerie';
+<?php $title = 'Réquisition Métropole';
 require_once('Model/Admin/connexion.php');
 $id =$_GET['id'];
 $db = getConnection();
@@ -62,7 +62,7 @@ foreach ($data as $v):?>
         <div id="wrapper">
 
             <!-- Navigation -->
-            <?php 
+      <?php 
 if (isset($_SESSION['logged'])) { ?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
@@ -136,14 +136,14 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php 
                    if ($type=="quincaillerier" OR $type=="admin") { ?>
                   <li>
-                    <a href="index.php?page=stock_quincailleries">Quincaillerie</a>
+                    <a href="index.php?page=stock_quincailleries">Métropole</a>
                   </li>
                  <?php  }
                    ?>
                   <?php 
                   if ($type=="magasinier" OR $type=="admin") { ?>
                     <li>
-                    <a href="index.php?page=stock_magasin">Magasin</a>
+                    <a href="index.php?page=stock_magasin">Atlas</a>
                   </li>
                  <?php }
                    ?>
@@ -163,14 +163,14 @@ if (isset($_SESSION['logged'])) { ?>
                   <?php 
                    if ($type=="quincaillerier" OR $type=="admin") { ?>
                   <li>
-                      <a href="index.php?page=vente">Quincaillerie</a>
+                      <a href="index.php?page=vente">Métropole</a>
                   </li>
                  <?php  }
                    ?>
                   <?php 
                   if ($type=="magasinier" OR $type=="admin") { ?>
                     <li>
-                    <a href="index.php?page=ventem">Magasin</a>
+                    <a href="index.php?page=ventem">Atlas</a>
                   </li>
                  <?php }
                    ?>
@@ -223,8 +223,14 @@ if (isset($_SESSION['logged'])) { ?>
                          <li>
                 <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+                <li>
+                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  </li>
                   <li>
-                <a href="index.php?page=historicapp">Historique d'approvisionnement</a>
+                      <a href="index.php?page=historicrecm">Récquisition Atlas</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicreq">Récquisition Métropole</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -258,7 +264,6 @@ if (isset($_SESSION['logged'])) { ?>
 <?php }else{
 header("location:index.php?page=login");
 } ?>
-
       <div id="page-wrapper">
         <div class="container-fluid">
           <div class="row">
@@ -283,8 +288,13 @@ header("location:index.php?page=login");
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Produit</label>
+                            <?php
+                            if(isset($_SESSION['ID'])){ ?>
+                            <input type="hidden" name="idu" id="idu" value="<?=$_SESSION['ID']?>">
+                            <?php }
+                            ?>
                             <input type="hidden" name="id" id="id" value="<?=$v->ID?>">
-                            <input readonly type="text" name="article" id="article" class="form-control" value="<?=$v->ARTICLE?>" placeholder="DCU du medicament Ici">
+                            <input readonly type="text" name="article" id="article" class="form-control" value="<?=$v->ARTICLE?>" >
                          </div>
                         </div>
                         <div class="col-md-3">
@@ -303,7 +313,7 @@ header("location:index.php?page=login");
                         <div class="col-md-3">
                           <div class="form-group"> 
                             <label>&nbsp; </label><br>
-                            <button type="submit" class="btn btn-primary btn-block pull-right">Recquisitionner</button>
+                            <button type="submit" class="btn btn-primary btn-block pull-right">Réquisitionner</button>
                          </div>
                         </div>
                         </div>
@@ -357,6 +367,7 @@ header("location:index.php?page=login");
         var sqte =  $("#sqte").val();
         var qqte =  $("#qqte").val();
         var id = $("#id").val();
+        var idu = $("#idu").val();
         $.ajax({
             url: "Public/script/recquisq.php",
             method: "POST",
@@ -364,7 +375,8 @@ header("location:index.php?page=login");
                 id:id,
                 aqte: aqte,
                 qqte: qqte,
-                sqte: sqte
+                sqte: sqte,
+                idu:idu
             },
             success: function (donnees) {
                 $('#message').html(donnees).slideDown();

@@ -47,7 +47,8 @@ Email 'carolle@gmail.com'
 Mot de passe '718930b5'
 ---------------------
 Email 'dev@gmail.com'
-Mot de passe ''
+Mot de passe '5df7791d'
+
 
 */ 
 ?>

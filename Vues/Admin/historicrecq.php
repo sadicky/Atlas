@@ -1,10 +1,11 @@
-<?php $title = 'Magasin'; ?>
+<?php $title = "Historique de la Réquisition du Métropole"; ?>
+<!DOCTYPE html>
 <html lang="en">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <link rel="shortcut icon" href="Public/Images/logo.png" type="image/x-icon"> 
+     <link rel="shortcut icon" href="public/Images/logo.png" type="image/x-icon"> 
     <meta name="description" content="Atlas">
     <meta name="author" content="SpaceLine">
 
@@ -51,7 +52,7 @@
 
         <div id="wrapper">
 
-            <!-- Navigation -->
+           <!-- Navigation -->
       <?php 
 if (isset($_SESSION['logged'])) { ?>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -264,91 +265,41 @@ header("location:index.php?page=login");
                         <!-- /.col-lg-12 -->
                         <div class="row">
                             <div class="col-lg-12">
+                                <div id="messages"></div>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        Les Articles
+                                   <?= $title ?>
                         <div class="pull-right"> 
-                            <?php 
-                             if (isset($_SESSION['TYPE'])) {
-                                 $type=$_SESSION['TYPE'];
-                                 if ($type=="admin" OR $type=="magasinier") { ?>
-                                     <a href='index.php?page=orderm&o=add' class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Vente</a>
-                               <?php  }
-                             }
-                             ?>
-                            <!-- <button class="btn btn-danger btn-xs"  id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button> -->
+                            <!-- <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>  -->
+                
+                          
                             
                         </div>
                                     </div>
                                     <!-- /.panel-heading -->
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered  table-hover" id="dataTables-example">
+                                            <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                                 <thead>
-                                                    <tr >
-                                                        <?php 
-                                                        if (isset($_SESSION['TYPE'])) {
-                                                            $type=$_SESSION['TYPE'];
-                                                            if ($type=="admin" OR $type=="magasinier") { ?>
-                                                        <th>#</th>
-                                                        <th>Articles</th>
-                                                        <th>Stock Disponible</th>
-                                                        <th>Prix</th>
-                                                        <th>Montant</th>
-                                                        <th>Recquisitioner</th>
-                                                        <?php }else{ ?>
-                                                         <th>#</th>
-                                                        <th>Articles</th>
-                                                        <th>Stock Disponible</th>
-                                                        <th>Prix</th>
-                                                        <th>Montant</th>
-                                                        <?php }
-                                                        }
-
-                                                         ?>
-                                                    </tr>
+                                                  <tr>
+                                                      <th>ARTICLE</th>
+                                                      <th>QUANTITE</th>
+                                                      <th>DATE DE LA RECQUISITION</th>
+                                                      <th>PAR</th>
+                                                  </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
-                                                        if (isset($_SESSION['TYPE'])) {
-                                                            $type=$_SESSION['TYPE'];
-                                                            if ($type=="admin" OR $type=="magasinier") { ?>
-                                                           <?php $cnt=1; foreach($getStock as $cat):?>
-                                                    <tr class="odd gradeX">
-                                                        <td><?=$cnt?></td>
-                                                        <td><b><?=$cat->ARTICLE?></b></td>
-                                                        <?php
-                                                        if ($cat->QTE < 5) { ?>
-                                                            <td class=' alert alert-danger text-white text-bold bg-danger'><?= $cat->QTE ?></td>
-                                                        <?php } else { ?>
-                                                            <td class='text-bold'><?= $cat->QTE ?></td>
-                                                        <?php } ?>
-                                                        <td><?=$cat->PRIX?></td>
-                                                        <td><?=$cat->PRIX*$cat->QTE?></td>
-                                                        <td class="center">
-                                                        <a href='index.php?page=recquism&id=<?=$cat->ID?>' type='submit' name='update' class='btn btn-xs btn-danger update' title='Recquisitionner'><i class='fa fa-cart-plus'></i> Recquisitionner</a>
-                                                         </td>
+                                                <?php
+                                                foreach($metropoleh as $d): ?>
+                                                    <tr>
+                                                    <td><?=$d->art?></td>
+                                                    <td><?=$d->qt?></td>
+                                                    <td><?=$d->dte?></td>
+                                                    <td><?=$d->user?></td>
                                                     </tr>
-                                                    <?php $cnt++; endforeach ?>
-                                                        <?php }else{ ?>
-                                                          <?php $cnt=1; foreach($getStock as $cat):?>
-                                                    <tr class="odd gradeX">
-                                                        <td><?=$cnt?></td>
-                                                        <td><b><?=$cat->ARTICLE?></b></td>
-                                                        <?php
-                                                        if ($cat->QTE < 5) { ?>
-                                                            <td class=' alert alert-danger text-white text-bold bg-danger'><?= $cat->QTE ?></td>
-                                                        <?php } else { ?>
-                                                            <td class='text-bold'><?= $cat->QTE ?></td>
-                                                        <?php } ?>
-                                                        <td><?=$cat->PRIX?></td>
-                                                        <td><?=$cat->PRIX*$cat->QTE?></td>
-                                                    </tr>
-                                                    <?php $cnt++; endforeach ?>
-                                                        <?php }
-                                                        }
+                                                    
+                                             <?php endforeach  ?>
 
-                                                         ?>
                                                     
                                                 </tbody>
                                             </table>
@@ -387,46 +338,15 @@ header("location:index.php?page=login");
             <script src="plugins/js/startmin.js"></script>
 
             <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-            <script>
-                $(document).ready(function() {
-                    $('#dataTables-example').DataTable({
-                        responsive: true
-                    });
 
-                           //imprimer
-             
-          $(document).on("click", "#print", function (event) {
-          event.preventDefault();
-      $.ajax({
-        url: 'Public/script/printStockM.php',
-        type: 'post',
-        data: {},
-        dataType: 'text',
-        success: function(response) {
-          var mywindow = window.open('', 'Atlas', 'height=400,width=600');
-          mywindow.document.write('<html><head><title>Approvisionnements</title>');
-          mywindow.document.write('</head><body>');
-          mywindow.document.write(response);
-          mywindow.document.write('</body></html>');
-
-          mywindow.document.close(); // necessary for IE >= 10
-          mywindow.focus(); // necessary for IE >= 10
-          mywindow.resizeTo(screen.width, screen.height);
-          setTimeout(function() {
-            mywindow.print();
-            mywindow.close();
-          }, 1250);
-
-          //mywindow.print();
-          //mywindow.close();
-
-        } // /success function
-      }); // /ajax function to fetch the printable order
-          });
-       
-                });
-            </script>
 
 </body>
 
 </html>
+
+<script>
+$(document).ready(function() {
+$('#dataTables-example').DataTable({responsive: true});
+
+});
+</script>

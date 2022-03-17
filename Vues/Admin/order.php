@@ -187,6 +187,21 @@ if ($_GET['o'] == 'add') {
                 <!-- /.nav-second-level -->
               </li>
               <li>
+                <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                <li>
+                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicrecm">Récquisition Magasin</a>
+                  </li>
+                  <li>
+                      <a href="index.php?page=historicreq">Récquisition Quincaillerie</a>
+                  </li>
+                </ul>
+                <!-- /.nav-second-level -->
+              </li>
+              <li>
                 <a href="#"><i class="fa fa-sitemap fa-fw"></i> Rapports<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                   <li>
@@ -282,7 +297,7 @@ if ($_GET['o'] == 'add') {
                           </td>
                           <td style="padding-left:30px;">
                             <div class="form-group">
-                              <input type="text" name="rate[]" id="rate<?= $x ?>" autocomplete="off" disabled="true" class="form-control" />
+                              <input type="text" name="rate[]" id="rate<?= $x ?>" autocomplete="off" class="form-control" onkeyup="getTotal(<?php echo $x ?>)" />
                               <input type="hidden" name="rateValue[]" id="rateValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                             </div>
                           </td>
@@ -684,7 +699,7 @@ if ($_GET['o'] == 'add') {
           '</div>' +
           '</td>' +
           '<td style="padding-left:20px;">' +
-          '<input type="text" name="rate[]" id="rate' + count + '" autocomplete="off" disabled="true" class="form-control" />' +
+          '<input type="text" name="rate[]" id="rate' + count + '" autocomplete="off"  onkeyup="getTotal(' + count + ')" class="form-control" />' +
           '<input type="hidden" name="rateValue[]" id="rateValue' + count + '" autocomplete="off" class="form-control" />' +
           '</td>' +
           '<td style="padding-left:20px;">' +
