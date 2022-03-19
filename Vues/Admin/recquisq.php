@@ -1,4 +1,5 @@
 <?php $title = 'Recquisition Quincaillerie';
+session_start();
 require_once('Model/Admin/connexion.php');
 $id =$_GET['id'];
 $db = getConnection();

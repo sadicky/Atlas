@@ -11,7 +11,7 @@ $balance = intval($sqte) - intval($aqte);
 $Quinc_Qty= intval($aqte) + intval($qqte);
 // $balance = 10;
 $date = date('Y-m-d H:i:s');
-$idu = 13;
+$idu = 30;
 $add = null;
 // var_dump($Quinc_Qty);die();
 if ($sqte <= 0) {

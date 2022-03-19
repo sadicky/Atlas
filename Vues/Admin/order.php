@@ -146,10 +146,10 @@ if ($_GET['o'] == 'add') {
                 <a href="#"><i class="fa fa-sitemap fa-fw"></i> Recquisitionner<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                   <li>
-                    <a href="index.php?page=stock_quincailleries">Quincaillerie</a>
+                    <a href="index.php?page=stock_quincailleries">Métropole</a>
                   </li>
                   <li>
-                    <a href="index.php?page=stock_magasin">Magasin</a>
+                    <a href="index.php?page=stock_magasin">Atlas</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -158,10 +158,10 @@ if ($_GET['o'] == 'add') {
                 <a href="#"><i class="fa fa-money fa-fw"></i> Vente<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                   <li>
-                    <a href="index.php?page=vente">Quincaillerie</a>
+                    <a href="index.php?page=vente">Métropole</a>
                   </li>
                   <li>
-                    <a href="index.php?page=ventem">Magasin</a>
+                    <a href="index.php?page=ventem">Atlas</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -189,14 +189,14 @@ if ($_GET['o'] == 'add') {
               <li>
                 <a href="#"><i class="fa fa-plus fa-fw"></i> Historique<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                <li>
-                      <a href="index.php?page=historicapp">Approvisionnement</a>
+                  <li>
+                    <a href="index.php?page=historicapp">Approvisionnement</a>
                   </li>
                   <li>
-                      <a href="index.php?page=historicrecm">Récquisition Magasin</a>
+                    <a href="index.php?page=historicrecm">Récquisition Magasin</a>
                   </li>
                   <li>
-                      <a href="index.php?page=historicreq">Récquisition Quincaillerie</a>
+                    <a href="index.php?page=historicreq">Récquisition Quincaillerie</a>
                   </li>
                 </ul>
                 <!-- /.nav-second-level -->
@@ -226,13 +226,13 @@ if ($_GET['o'] == 'add') {
           <div class="panel panel-default">
             <div class="panel-heading">
 
-              <i class="glyphicon glyphicon-plus-sign"></i> Ajouter
+              <i class="glyphicon glyphicon-plus-sign"></i> Vente - Magasin
 
             </div>
             <!--/panel-->
             <div class="panel-body">
 
-              <?php if ($_GET['o'] == 'add') : ?>
+              <?php if ($_GET['o'] == 'add') { ?>
 
                 <div class="success-messages"></div>
                 <!--/success-messages-->
@@ -242,21 +242,21 @@ if ($_GET['o'] == 'add') {
                   <div class="form-group">
                     <label for="orderDate" class="col-sm-2 control-label">Date</label>
                     <div class="col-sm-10">
-                      <input type="date" class="form-control" id="datev" name="datev" autocomplete="off" required/>
+                      <input type="date" class="form-control" id="datev" name="datev" autocomplete="off" required />
                     </div>
                   </div>
                   <!--/form-group-->
                   <div class="form-group">
                     <label for="clientName" class="col-sm-2 control-label">Client</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="client" name="client" placeholder="Nom du Client" autocomplete="off" required/>
+                      <input type="text" class="form-control" id="client" name="client" placeholder="Nom du Client" autocomplete="off" required />
                     </div>
                   </div>
                   <!--/form-group-->
                   <div class="form-group">
                     <label for="clientContact" class="col-sm-2 control-label">Téléphone du client</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="tel" name="tel" placeholder="Numero du client" autocomplete="off" required/>
+                      <input type="text" class="form-control" id="tel" name="tel" placeholder="Numero du client" autocomplete="off" required />
                     </div>
                   </div>
                   <!--/form-group-->
@@ -398,7 +398,222 @@ if ($_GET['o'] == 'add') {
             <!--/panel-->
           </div>
           <!--/panel-->
-        <?php endif ?>
+        </div>
+      </div>
+        <?php
+
+                // /else manage order
+              } else if ($_GET['o'] == 'editOrd') { ?>
+
+          <div class="success-messages"></div>
+          <!--/success-messages-->
+
+          <form class="form-horizontal" method="POST" action="Public/script/editOrder.php" id="editOrderForm">
+
+            <?php $orderId = $_GET['i'];
+
+                $sql = "SELECT tbl_vente.ID, tbl_vente.DATEV, tbl_vente.CLIENT, tbl_vente.TEL, tbl_vente.MTOTAL, tbl_vente.PAYE, tbl_vente.RESTE,
+         tbl_vente.PTYPE, tbl_vente.STATUTV FROM tbl_vente	
+					WHERE tbl_vente.ID = {$orderId}";
+                $result = $connect->query($sql);
+                $data = $result->fetch(PDO::FETCH_OBJ);
+            ?>
+
+            <div class="form-group">
+              <label for="orderDate" class="col-sm-2 control-label">Date de Vente</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="datev" name="datev" autocomplete="off" value="<?= $data->DATEV ?>" />
+              </div>
+            </div>
+            <!--/form-group-->
+            <div class="form-group">
+              <label for="clientName" class="col-sm-2 control-label">Nom du Client </label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="client" name="client" placeholder="Client Name" autocomplete="off" value="<?= $data->CLIENT ?>" />
+              </div>
+            </div>
+            <!--/form-group-->
+            <div class="form-group">
+              <label for="clientContact" class="col-sm-2 control-label"> Contact du Client</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="tel" name="tel" placeholder="Contact Number" autocomplete="off" value="<?= $data->TEL ?>" />
+              </div>
+            </div>
+            <!--/form-group-->
+
+            <table class="table" id="productTable">
+              <thead>
+                <tr>
+                  <th style="width:40%;">Produit</th>
+                  <th style="width:20%;">Prix</th>
+                  <th style="width:10%;">Stock</th>
+                  <th style="width:15%;">Quantité</th>
+                  <th style="width:25%;">Total</th>
+                  <th style="width:10%;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $orderItemSql = "SELECT tbl_vente_article.IDV, tbl_vente_article.ID, tbl_vente_article.IDA, tbl_vente_article.QTE,
+              tbl_vente_article.TOTAL,tbl_vente_article.PRIX  FROM tbl_vente_article WHERE tbl_vente_article.IDV= {$orderId}";
+                $orderItemResult = $connect->query($orderItemSql);
+
+                $arrayNumber = 0;
+
+                $x = 1;
+                while ($orderItemData = $orderItemResult->fetch(PDO::FETCH_OBJ)) {  ?>
+                  <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
+                    <td style="margin-left:20px;">
+                      <div class="form-group">
+
+                        <select class="form-control" name="article[]" id="article<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
+                          <option value="">~~SELECT~~</option>
+                          <?php
+                          $productSql = "SELECT * FROM tbl_stockq WHERE  STATUT = '1' AND QTE != '0'";
+                          $productData = $connect->query($productSql);
+
+                          while ($row = $productData->fetch(PDO::FETCH_OBJ)) {
+                            $selected = "";
+                            if ($row->ID == $orderItemData->IDA) {
+                              $selected = "selected";
+                            } else {
+                              $selected = "";
+                            }
+                            echo "<option value='" . $row->ID. "' id='changeProduct" . $row->ID . "' " . $selected . " >" . $row->ARTICLE . "</option>";
+                          } // /while 
+
+                          ?>
+                        </select>
+                      </div>
+                    </td>
+                    <td style="padding-left:20px;">
+                      <input type="text" name="rate[]" id="rate<?php echo $x; ?>" autocomplete="off" class="form-control" onkeyup="getTotal(<?php echo $x ?>)"  value="<?= $orderItemData->PRIX ?>" />
+                      <input type="hidden" name="rateValue[]" id="rateValue<?php echo $x; ?>" autocomplete="off" class="form-control" value="<?= $orderItemData->PRIX ?>" />
+                    </td>
+                    <td style="padding-left:20px;">
+                      <div class="form-group">
+                        <?php
+                        $productSql = "SELECT * FROM tbl_stockm WHERE  STATUT = '1' AND QTE > '0'";
+                        $productData = $connect->query($productSql);
+
+                        while ($row = $productData->fetch(PDO::FETCH_OBJ)) {
+                          $selected = "";
+                          if ($row->ID == $orderItemData->IDV) {
+                            echo "<p id='stockD" . $row->ID . "'>" . $row->QTE . "</p>";
+                          } else {
+                            $selected = "";
+                          }
+                        } // /while 
+
+                        ?>
+
+                      </div>
+                    </td>
+                    <td style="padding-left:20px;">
+                      <div class="form-group">
+                        <input type="number" name="qte[]" id="qte<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x ?>)" autocomplete="off" class="form-control" min="1" value="<?= $orderItemData->QTE ?>" />
+                      </div>
+                    </td>
+                    <td style="padding-left:20px;">
+                      <input type="text" name="total[]" id="total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" value="<?= $orderItemData->TOTAL ?>" />
+                      <input type="hidden" name="totalValue[]" id="totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" value="<?= $orderItemData->TOTAL ?>" />
+                    </td>
+                    <td>
+
+                      <button class="btn btn-danger removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="glyphicon glyphicon-trash"></i></button>
+                    </td>
+                  </tr>
+                <?php
+                  $arrayNumber++;
+                  $x++;
+                } // /for
+                ?>
+              </tbody>
+            </table>
+
+
+            <div class="col-md-6">
+                
+              <div class="form-group">
+                <label for="paid" class="col-sm-3 control-label">Montant payé</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="paid" name="paid" autocomplete="off" onkeyup="paidAmount()" value="<?= $data->PAYE ?>" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="totalAmount" class="col-sm-3 control-label">Montant Total</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="totalAmount" name="totalAmount" disabled="true" value="<?= $data->MTOTAL ?>" />
+                  <input type="hidden" class="form-control" id="totalAmountValue" name="totalAmountValue" value="<?= $data->MTOTAL  ?>" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="due" class="col-sm-3 control-label">Reste</label>
+                <div class="col-sm-9">
+                  <input type="text" class="form-control" id="due" name="due" disabled="true" value="<?= $data->RESTE ?>" />
+                  <input type="hidden" class="form-control" id="dueValue" name="dueValue" value="<?= $data->RESTE  ?>" />
+                </div>
+              </div>
+
+            </div>
+            <!--/col-md-6-->
+
+            <div class="col-md-6">
+              <!--/form-group-->
+              <!--/form-group-->
+              <div class="form-group">
+                <label for="clientContact" class="col-sm-3 control-label">Type</label>
+                <div class="col-sm-9">
+                  <select class="form-control" name="paymentType" id="paymentType">
+                    <option value="">~~SELECT~~</option>
+                    <option value="1" <?php if ($data->PTYPE == 'Cheque') {
+                                        echo "selected";
+                                      } ?>>Cheque</option>
+                    <option value="2" <?php if ($data->PTYPE  == 'Cash') {
+                                        echo "selected";
+                                      } ?>>Cash</option>
+                    <option value="3" <?php if ($data->PTYPE  == 'CC') {
+                                        echo "selected";
+                                      } ?>>Credit Card</option>
+                  </select>
+                </div>
+              </div>
+              <!--/form-group-->
+              <div class="form-group">
+                <label for="clientContact" class="col-sm-3 control-label">Statut</label>
+                <div class="col-sm-9">
+                  <select class="form-control" name="paymentStatus" id="paymentStatus">
+                    <option value="">~~SELECT~~</option>
+                    <option value="1" <?php if ($data->STATUTV  == 'totalite') {
+                                        echo "selected";
+                                      } ?>>Totalité</option>
+                    <option value="2" <?php if ($data->STATUTV  == 'partiel') {
+                                        echo "selected";
+                                      } ?>>Partiel</option>
+                    <option value="3" <?php if ($data->STATUTV  == 'dette') {
+                                        echo "selected";
+                                      } ?>>Dette</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!--/col-md-6-->
+
+            <div class="form-group editButtonFooter">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-success" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Ajouter une ligne </button>
+
+                <input type="hidden" name="orderId" id="orderId" value="<?php echo $_GET['i']; ?>" />
+
+                <button type="submit" id="editOrderBtn" data-loading-text="Loading..." class="btn btn-success"><i class="glyphicon glyphicon-ok-sign"></i> Modifier</button>
+
+              </div>
+            </div>
+          </form>
+
+        <?php
+              }
+        ?>
         </div>
       </div>
 

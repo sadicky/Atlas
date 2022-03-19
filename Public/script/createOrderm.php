@@ -55,10 +55,10 @@ if($_POST) {
 				// update product table
 				$updateProductTable = "UPDATE tbl_stockm SET QTE = '".$updateQuantity[$x]."' WHERE ID = ".$_POST['article'][$x]."";
 				$connect->query($updateProductTable);
-
+				
 				// add into order_item
-				$orderItemSql = "INSERT INTO tbl_vente_article (IDV, IDA, QTE, TOTAL, STATUT) 
-				VALUES ('$order_id', '".$_POST['article'][$x]."', '".$_POST['qte'][$x]."', '".$_POST['totalValue'][$x]."', '1')";
+				$orderItemSql = "INSERT INTO tbl_vente_article (IDV, IDA, QTE,PRIX, TOTAL, STATUT) 
+				VALUES ('$order_id', '".$_POST['article'][$x]."', '".$_POST['qte'][$x]."', '".$_POST['rate'][$x]."', '".$_POST['totalValue'][$x]."', '1')";
 
 				$connect->query($orderItemSql);		
 

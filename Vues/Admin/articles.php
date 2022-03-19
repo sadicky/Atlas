@@ -131,14 +131,14 @@ $arts = $art->getArticlesId();
                         <?php
                         if ($type == "quincaillerier" or $type == "admin") { ?>
                           <li>
-                            <a href="index.php?page=stock_quincailleries">Quincaillerie</a>
+                            <a href="index.php?page=stock_quincailleries">Metropole</a>
                           </li>
                         <?php  }
                         ?>
                         <?php
                         if ($type == "magasinier" or $type == "admin") { ?>
                           <li>
-                            <a href="index.php?page=stock_magasin">Magasin</a>
+                            <a href="index.php?page=stock_magasin">Atlas</a>
                           </li>
                         <?php }
                         ?>

@@ -6,13 +6,13 @@ $connect = getConnection();
 
 $valid['success'] = array('success' => false, 'messages' => array());
 
-// $orderId = 1;
+// $orderId = 2;
 $orderId = $_POST['orderId'];
 
 if($orderId) { 
- $sql = $connect->query("UPDATE tbl_vente SET STATUT = 0 WHERE ID = $orderId");
+ $sql = $connect->query("UPDATE tbl_vente SET STATUT = '0' WHERE ID = $orderId");
 
- $orderItem =$connect->query("UPDATE tbl_vente_article SET STATUT = 0 WHERE  IDV = $orderId");
+ $orderItem =$connect->query("UPDATE tbl_vente_article SET STATUT = '0' WHERE  IDV = $orderId");
 	
  if($sql == TRUE && $orderItem == TRUE) {
 	$valid['success'] = true;

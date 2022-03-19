@@ -288,7 +288,7 @@ header("location:index.php?page=login");
           $expiry = $g2->EXPIRY;
 
           //NOMBRE ARTICLES EPUISÉS
-          $sql3 = "select count(ARTICLE)  as EPUISE from tbl_articles WHERE QTE='0' AND DATECREAT !='0000-00-00'";
+          $sql3 = "select count(ARTICLE) as EPUISE from tbl_articles WHERE QTE='0' AND DATECREAT !='0000-00-00'";
           $req3 = $db->query($sql3);
           $req3->execute();
           $g3 = $req3->fetch(PDO::FETCH_OBJ);
@@ -311,7 +311,13 @@ header("location:index.php?page=login");
                       <i class="fa fa-money fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                      <div class="huge"><?= $sum_today ?></div>
+                      <div class="huge">
+                        	<?php if ($sum_today == "") {
+											echo "0$";
+											} else {
+											echo $sum_today.'$';
+										}
+								?></div>
                       <div>Ventes Aujourd'hui</div>
                     </div>
                   </div>
@@ -429,9 +435,9 @@ header("location:index.php?page=login");
                                 foreach ($getVente as $vente) :  ?>
                                   <tr class="odd gradeX">
                                     <td align="center"><b>FACT000<?= $vente->ID ?></b></td>
-                                    <td><?= $vente->MTOTAL ?></td>
-                                    <td><?= $vente->PAYE ?></td>
-                                    <td><?= $vente->RESTE ?></td>
+                                    <td><?= $vente->MTOTAL ?>$</td>
+                                    <td><?= $vente->PAYE ?>$</td>
+                                    <td><?= $vente->RESTE ?>$</td>
                                     <td><?php // active 
                                         if ($vente->STATUTV == 'totalite') {
                                           echo "<label class='label label-success'>Totalité</label>";
