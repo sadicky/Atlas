@@ -282,7 +282,7 @@ header("location:index.php?page=login");
                             Facture
                             <div class="pull-right">
                               <button data-toggle="modal" data-target="#ajoutdep" class="btn btn-primary btn-xs"><i class="fa fa-plus fa-fw"></i> Nouvelle</button>
-                              <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
+                              <button class="btn btn-danger btn-xs"  id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
                               <a href="index.php?page=etatdep" class="btn btn-default btn-xs"><i class="fa fa-list fa-fw"></i>Etats</a>
                           </div>
                           </div>
@@ -309,18 +309,18 @@ header("location:index.php?page=login");
                                     <tr class="odd gradeX">
                                       <td align="center"><b>FACT000<?= $vente->ID ?></b></td>
                                       <td><b><?= $vente->BENEFICIAIRE ?></b></td>
-                                      <td><?= $vente->MONTANT ?></td>
+                                      <td><?= $vente->MONTANT ?>$</td>
                                       <td><?= $vente->MOTIF ?></td>
                                       <td><?php // active 
                                           if ($vente->STATUT == '1') {
-                                            echo "<label class='label label-success'>Actif</label>";
+                                            echo "<label class='label label-success'>Effectué</label>";
                                           } else {
-                                            echo "<label class='label label-danger'>Actif</label>";
+                                            echo "<label class='label label-danger'>En attente</label>";
                                           } ?>
                                       </td>
                                       <td><?= $vente->DATE ?></td>
                                       <td><?= $vente->NAME ?></td>
-                                    
+                                     
                                     </tr>
                                   <?php $cnt++;
                                   endforeach ?>
@@ -381,6 +381,37 @@ header("location:index.php?page=login");
     $('#dataTables-example').DataTable({
       responsive: true
     });
+          //imprimer
+             
+          $(document).on("click", "#print", function (event) {
+          event.preventDefault();
+      $.ajax({
+        url: 'Public/script/printCaisseS.php',
+        type: 'post',
+        data: {},
+        dataType: 'text',
+        success: function(response) {
+          var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+          mywindow.document.write('<html><head><title>Articles</title>');
+          mywindow.document.write('</head><body>');
+          mywindow.document.write(response);
+          mywindow.document.write('</body></html>');
+
+          mywindow.document.close(); // necessary for IE >= 10
+          mywindow.focus(); // necessary for IE >= 10
+          mywindow.resizeTo(screen.width, screen.height);
+          setTimeout(function() {
+            mywindow.print();
+            mywindow.close();
+          }, 1250);
+
+          //mywindow.print();
+          //mywindow.close();
+
+        } // /success function
+      }); // /ajax function to fetch the printable order
+          });
+       
   });
 </script>
 

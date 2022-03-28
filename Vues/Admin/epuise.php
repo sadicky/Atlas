@@ -270,7 +270,7 @@ header("location:index.php?page=login");
                                     <div class="panel-heading">
                                         Les Articles
                                         <div class="pull-right">
-                                           <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Exporter PDF</button>
+                                           <button class="btn btn-danger btn-xs" id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Exporter PDF</button>
                                         </div>
                                     </div>
                                     <!-- /.panel-heading -->
@@ -350,7 +350,37 @@ header("location:index.php?page=login");
                 $(document).ready(function() {
                     $('#dataTables-example').DataTable({
                         responsive: true
-                    });
+                    });//imprimer
+             
+             $(document).on("click", "#print", function (event) {
+             event.preventDefault();
+         $.ajax({
+           url: 'Public/script/printEp.php',
+           type: 'post',
+           data: {},
+           dataType: 'text',
+           success: function(response) {
+             var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+             mywindow.document.write('<html><head><title>Articles</title>');
+             mywindow.document.write('</head><body>');
+             mywindow.document.write(response);
+             mywindow.document.write('</body></html>');
+   
+             mywindow.document.close(); // necessary for IE >= 10
+             mywindow.focus(); // necessary for IE >= 10
+             mywindow.resizeTo(screen.width, screen.height);
+             setTimeout(function() {
+               mywindow.print();
+               mywindow.close();
+             }, 1250);
+   
+             //mywindow.print();
+             //mywindow.close();
+   
+           } // /success function
+         }); // /ajax function to fetch the printable order
+             });
+          
                 });
             </script>
 

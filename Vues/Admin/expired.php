@@ -1,5 +1,6 @@
 <?php $title = 'Les Articles Expirés';
 $arts = $art->getExpired();
+// print_r($arts);die();
 ?>
 <html lang="en">
 
@@ -270,7 +271,7 @@ header("location:index.php?page=login");
                                     <div class="panel-heading">
                                         Les Articles
                                         <div class="pull-right">
-                                            <button class="btn btn-danger btn-xs"><i class="fa fa-print fa-fw"></i> Imprimer</button>
+                                            <button class="btn btn-danger btn-xs" id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer</button>
                                          </div>
                                     </div>
                                     <!-- /.panel-heading -->
@@ -295,7 +296,7 @@ header("location:index.php?page=login");
                                                             <td><?= $cnt ?></td>
                                                             <td><b><?= $cat->ARTICLE ?></b></td>
                                                             <td><?= $cat->CATEGORIE ?></td>
-                                                            <td><?= $cat->PRIX ?></td>
+                                                            <td><?= $cat->PRIX ?>$</td>
                                                             <td><?= $cat->QTE ?></td>
                                                             <td><?= $cat->PEREMPTION ?></td>
                                                             <td class="center">
@@ -350,7 +351,37 @@ header("location:index.php?page=login");
                 $(document).ready(function() {
                     $('#dataTables-example').DataTable({
                         responsive: true
-                    });
+                    });//imprimer
+             
+             $(document).on("click", "#print", function (event) {
+             event.preventDefault();
+         $.ajax({
+           url: 'Public/script/printExp.php',
+           type: 'post',
+           data: {},
+           dataType: 'text',
+           success: function(response) {
+             var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+             mywindow.document.write('<html><head><title>Articles</title>');
+             mywindow.document.write('</head><body>');
+             mywindow.document.write(response);
+             mywindow.document.write('</body></html>');
+   
+             mywindow.document.close(); // necessary for IE >= 10
+             mywindow.focus(); // necessary for IE >= 10
+             mywindow.resizeTo(screen.width, screen.height);
+             setTimeout(function() {
+               mywindow.print();
+               mywindow.close();
+             }, 1250);
+   
+             //mywindow.print();
+             //mywindow.close();
+   
+           } // /success function
+         }); // /ajax function to fetch the printable order
+             });
+          
                 });
             </script>
 

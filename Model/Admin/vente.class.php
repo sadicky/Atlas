@@ -47,7 +47,7 @@ Class Vente
         $db = getConnection();
         $statement = $db->prepare("SELECT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
         tbl_vente.STATUTV AS STATUTV,tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE FROM tbl_vente,tbl_users 
-        WHERE tbl_users.ID =tbl_vente.IDU AND DEPOT='Quincaillerie' ORDER BY ID DESC");
+        WHERE tbl_users.ID =tbl_vente.IDU AND DEPOT='Quincaillerie' AND tbl_vente.STATUT='1' ORDER BY ID DESC");
         $statement->execute();
         // $total_rows = $statement->rowCount();
         $tbP = array();
@@ -63,7 +63,7 @@ Class Vente
             $db = getConnection();
             $statement = $db->prepare("SELECT tbl_vente.ID AS ID,tbl_vente.CLIENT AS CLIENT,tbl_vente.MTOTAL AS MTOTAL,
             tbl_vente.STATUTV AS STATUTV,tbl_vente.STATUT AS STATUT,tbl_vente.PAYE AS PAYE,tbl_vente.RESTE AS RESTE,tbl_vente.DATEV AS DATEV,tbl_users.NAME,tbl_vente.PTYPE FROM tbl_vente,tbl_users 
-            WHERE tbl_users.ID =tbl_vente.IDU AND DEPOT='Magasin' ORDER BY ID DESC");
+            WHERE tbl_users.ID =tbl_vente.IDU AND DEPOT='Magasin' AND tbl_vente.STATUT='1' ORDER BY ID DESC");
             $statement->execute();
             // $total_rows = $statement->rowCount();
             $tbP = array();

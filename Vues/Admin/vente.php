@@ -38,7 +38,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+  <div class="wrapper">
 
     <!-- Debut Navbar -->
     <?php
@@ -260,47 +260,24 @@ header("location:index.php?page=login");
         <div class="container-fluid">
           <div class="row">
             <div class="col-lg-12">
-              <h1 class="page-header"><?=$title?></h1>
+              <h1 class="page-header"><?= $title ?></h1>
             </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <!-- /.panel -->
-              <div class="panel panel-default">
-                <!-- /.panel-heading -->
-                <div class="panel-body">
-                  <!-- /.row -->
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="panel panel-default">
-                        <div class="panel-heading">
-                          Facture
-                                        <div class="pull-right">
-                                            <button class="btn btn-danger btn-xs"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
-                                            
-                                        </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">  
-                          
-                        <div class="table-responsive">
-                                            <table class="table table-striped table-condensed table-bordered table-hover" id="dataTables-example">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Client</th>
-                                                        <th>Total</th>
-                                                        <th>Payé</th>
-                                                        <th>Reste</th>
-                                                        <th>Statut Paiement</th>
-                                                        <th>Statut</th>
-                                                        <th>Date</th>
-                                                        <th>Crée par</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php $cnt=1; foreach($getVente as $vente):
-                                                      // $orderId = $vente->ID;
+            <div class="row">
+              <div class="col-lg-12">
+                <!-- /.panel -->
+                <div class="panel panel-default">
+                  <!-- /.panel-heading -->
+                  <div class="panel-body">
+                    <!-- /.row -->
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div id="success-messages"></div>
+                        <div id="removeOrderMessages"></div>
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            Facture
+                            <div class="pull-right">
+                              <button class="btn btn-danger btn-xs" id="print"><i class="fa fa-file-pdf-o fa-fw"></i> Imprimer PDF</button>
 
                                                       // $countOrderItemSql = "SELECT count(*) FROM tbl_vente_article WHERE IDV = $orderId";
                                                       // $itemCountResult = $db->query($countOrderItemSql);
@@ -344,56 +321,146 @@ header("location:index.php?page=login");
                                                 </tbody>
                                             </table>
                                         </div>
+                                      </td>
+                                    </tr>
+                                  <?php $cnt++;
+                                  endforeach ?>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <!-- /.panel-body -->
                         </div>
-                        <!-- /.panel-body -->
+                        <!-- /.panel -->
                       </div>
-                      <!-- /.panel -->
+                      <!-- /.col-lg-12 -->
                     </div>
-                    <!-- /.col-lg-12 -->
+
                   </div>
-
+                  <!-- /.panel-body -->
                 </div>
-                <!-- /.panel-body -->
+                <!-- /.panel -->
               </div>
-              <!-- /.panel -->
+              <!-- /.col-lg-8 -->
             </div>
-            <!-- /.col-lg-8 -->
           </div>
+          <!-- /.container-fluid -->
         </div>
-        <!-- /.container-fluid -->
-      </div>
-      <!-- /#page-wrapper -->
+        <!-- /#page-wrapper -->
 
-    </div>
+      </div>
 
 
       <!-- jQuery -->
       <script src="plugins/js/jquery.min.js"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="plugins/js/bootstrap.min.js"></script>
+      <!-- Bootstrap Core JavaScript -->
+      <script src="plugins/js/bootstrap.min.js"></script>
 
-<!-- Metis Menu Plugin JavaScript -->
-<script src="plugins/js/metisMenu.min.js"></script>
+      <!-- Metis Menu Plugin JavaScript -->
+      <script src="plugins/js/metisMenu.min.js"></script>
 
-<!-- DataTables JavaScript -->
-<script src="plugins/js/dataTables/jquery.dataTables.min.js"></script>
-<script src="plugins/js/dataTables/dataTables.bootstrap.min.js"></script>
+      <!-- DataTables JavaScript -->
+      <script src="plugins/js/dataTables/jquery.dataTables.min.js"></script>
+      <script src="plugins/js/dataTables/dataTables.bootstrap.min.js"></script>
 
-<!-- Custom Theme JavaScript -->
-<script src="plugins/js/startmin.js"></script>
+      <!-- Custom Theme JavaScript -->
+      <script src="plugins/js/startmin.js"></script>
 
-  <!-- ./wrapper -->
+      <!-- ./wrapper -->
 
 </body>
 
 <script>
-      $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-          responsive: true
-        });
-      });
-       // print order function
+  var myTable ;
+  $(document).ready(function() {
+     $('#myTable').DataTable({
+      responsive: true
+    });
+  });
+  //imprimer
+
+  $(document).on("click", "#print", function(event) {
+    event.preventDefault();
+    $.ajax({
+      url: 'Public/script/printV.php',
+      type: 'post',
+      data: {},
+      dataType: 'text',
+      success: function(response) {
+        var mywindow = window.open('', 'Atlas', 'height=400,width=600');
+        mywindow.document.write('<html><head><title>Articles</title>');
+        mywindow.document.write('</head><body>');
+        mywindow.document.write(response);
+        mywindow.document.write('</body></html>');
+
+        mywindow.document.close(); // necessary for IE >= 10
+        mywindow.focus(); // necessary for IE >= 10
+        mywindow.resizeTo(screen.width, screen.height);
+        setTimeout(function() {
+          mywindow.print();
+          mywindow.close();
+        }, 1250);
+
+        //mywindow.print();
+        //mywindow.close();
+
+      } // /success function
+    }); // /ajax function to fetch the printable order
+  });
+
+// remove order from server
+function removeOrder(orderId = null) {
+	if (orderId) {
+		$("#removeOrderBtn").unbind('click').bind('click', function () {
+			$("#removeOrderBtn").button('loading');
+
+			$.ajax({
+				url: 'Public/script/removeOrder.php',
+				type: 'post',
+				data: { orderId: orderId },
+				dataType: 'json',
+				success: function (response) {
+					$("#removeOrderBtn").button('reset');
+
+					if (response.success == true) {
+
+						// hide modal
+						$("#removeOrderModal").modal('hide');
+						// success messages
+						$("#success-messages").html('<div class="alert alert-success">' +
+							'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+							'<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
+							'</div>');  
+           window.location.href='https://atlas243.com/index.php?page=vente';
+  
+					} else {
+						// error messages
+						$(".removeOrderMessages").html('<div class="alert alert-warning">' +
+							'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+							'<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
+							'</div>');
+
+						// remove the mesages
+						$(".alert-success").delay(500).show(10, function () {
+							$(this).delay(3000).hide(10, function () {
+								$(this).remove();
+							});
+						}); // /.alert	          
+					} // /else
+
+				} // /success
+			});  // /ajax function to remove the order
+
+		}); // /remove order button clicked
+
+
+	} else {
+		alert('error! refresh the page again');
+	}
+}
+// /remove order from server
+  // print order function
   function printOrder(orderId = null) {
     if (orderId) {
 
@@ -427,5 +494,196 @@ header("location:index.php?page=login");
       }); // /ajax function to fetch the printable order
     } // /if orderId
   }
-    </script>
+
+  // Payment ORDER
+  function paymentOrder(orderId = null) {
+    if (orderId) {
+
+      $.ajax({
+        url: 'Public/script/fetchOrderData.php',
+        type: 'post',
+        data: {
+          orderId: orderId
+        },
+        dataType: 'json',
+        success: function(response) {
+
+          // due 
+          $("#due").val(response.order[10]);
+
+          // pay amount 
+          $("#payAmount").val(response.order[10]);
+
+          var paidAmount = response.order[9]
+          var dueAmount = response.order[10];
+          var grandTotal = response.order[8];
+
+          // update payment
+          $("#updatePaymentOrderBtn").unbind('click').bind('click', function() {
+            var payAmount = $("#payAmount").val();
+            var paymentType = $("#paymentType").val();
+            var paymentStatus = $("#paymentStatus").val();
+
+            if (payAmount == "") {
+              $("#payAmount").after('<p class="text-danger">The Pay Amount field is required</p>');
+              $("#payAmount").closest('.form-group').addClass('has-error');
+            } else {
+              $("#payAmount").closest('.form-group').addClass('has-success');
+            }
+
+            if (paymentType == "") {
+              $("#paymentType").after('<p class="text-danger">The Pay Amount field is required</p>');
+              $("#paymentType").closest('.form-group').addClass('has-error');
+            } else {
+              $("#paymentType").closest('.form-group').addClass('has-success');
+            }
+
+            if (paymentStatus == "") {
+              $("#paymentStatus").after('<p class="text-danger">The Pay Amount field is required</p>');
+              $("#paymentStatus").closest('.form-group').addClass('has-error');
+            } else {
+              $("#paymentStatus").closest('.form-group').addClass('has-success');
+            }
+
+            if (payAmount && paymentType && paymentStatus) {
+              $("#updatePaymentOrderBtn").button('loading');
+              $.ajax({
+                url: 'php_action/editPayment.php',
+                type: 'post',
+                data: {
+                  orderId: orderId,
+                  payAmount: payAmount,
+                  paymentType: paymentType,
+                  paymentStatus: paymentStatus,
+                  paidAmount: paidAmount,
+                  grandTotal: grandTotal
+                },
+                dataType: 'json',
+                success: function(response) {
+                  $("#updatePaymentOrderBtn").button('loading');
+
+                  // remove error
+                  $('.text-danger').remove();
+                  $('.form-group').removeClass('has-error').removeClass('has-success');
+
+                  $("#paymentOrderModal").modal('hide');
+
+                  $("#success-messages").html('<div class="alert alert-success">' +
+                    '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
+                    '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> ' + response.messages +
+                    '</div>');
+
+                  // remove the mesages
+                  $(".alert-success").delay(500).show(10, function() {
+                    $(this).delay(3000).hide(10, function() {
+                      $(this).remove();
+                    });
+                  }); // /.alert	
+
+                  // refresh the manage order table
+                  manageOrderTable.ajax.reload(null, false);
+
+                } //
+
+              });
+            } // /if
+
+            return false;
+          }); // /update payment			
+
+        } // /success
+      }); // fetch order data
+    } else {
+      alert('Error ! Refresh the page again');
+    }
+  }
+</script>
+<!-- edit order -->
+<div class="modal fade" tabindex="-1" role="dialog" id="paymentOrderModal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="glyphicon glyphicon-edit"></i> Modifier ce Paiement</h4>
+      </div>
+
+      <div class="modal-body form-horizontal" style="max-height:500px; overflow:auto;">
+
+        <div class="paymentOrderMessages"></div>
+
+
+        <div class="form-group">
+          <label for="due" class="col-sm-3 control-label">Montant dû</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="due" name="due" disabled="true" />
+          </div>
+        </div>
+        <!--/form-group-->
+        <div class="form-group">
+          <label for="payAmount" class="col-sm-3 control-label">Payé</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="payAmount" name="payAmount" />
+          </div>
+        </div>
+        <!--/form-group-->
+        <div class="form-group">
+          <label for="clientContact" class="col-sm-3 control-label">Type du Paiement</label>
+          <div class="col-sm-9">
+            <select class="form-control" name="paymentType" id="paymentType">
+              <option value="">~~SELECT~~</option>
+              <option value="cheque">Cheque</option>
+              <option value="cash">Cash</option>
+              <option value="cc">Credit Card</option>
+            </select>
+          </div>
+        </div>
+        <!--/form-group-->
+        <div class="form-group">
+          <label for="clientContact" class="col-sm-3 control-label">Statut du Paiement</label>
+          <div class="col-sm-9">
+            <select class="form-control" name="paymentStatus" id="paymentStatus">
+              <option value="">~~SELECT~~</option>
+              <option value="totalite">Totalité</option>
+              <option value="partiel">Acompte</option>
+              <option value="dette">dette</option>
+            </select>
+          </div>
+        </div>
+        <!--/form-group-->
+
+      </div>
+      <!--/modal-body-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="glyphicon glyphicon-remove-sign"></i> Close</button>
+        <button type="button" class="btn btn-primary" id="updatePaymentOrderBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-ok-sign"></i> Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- /edit order-->
+
+
+<!-- remove order -->
+<div class="modal fade" tabindex="-1" role="dialog" id="removeOrderModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><i class="glyphicon glyphicon-trash"></i> Supprimer cette vente</h4>
+      </div>
+      <div class="modal-body">
+
+        <div class="removeOrderMessages"></div>
+
+        <p>Voulez-vous vraiment supprimer cette vente ?</p>
+      </div>
+      <div class="modal-footer removeProductFooter">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="glyphicon glyphicon-remove-sign"></i> Close</button>
+        <button type="button" class="btn btn-primary" id="removeOrderBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-ok-sign"></i> Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- /remove order-->
+
 </html>

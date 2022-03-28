@@ -1,5 +1,6 @@
 <?php $title = 'Recquisition Magasin';
 require_once('Model/Admin/connexion.php');
+session_start();
 $id =$_GET['id'];
 $db = getConnection();
 $sql="SELECT * FROM tbl_articles WHERE ID='$id'";

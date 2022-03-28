@@ -30,7 +30,7 @@ $paid = $orderData[6];
 $due = $orderData[7];
 
 $orderItemSql = "SELECT tbl_vente_article.IDV,  tbl_vente_article.QTE,
-tbl_vente_article.TOTAL,tbl_stockm.ARTICLE,tbl_stockm.PRIX  FROM tbl_vente_article
+tbl_vente_article.TOTAL,tbl_stockm.ARTICLE,tbl_vente_article.PRIX  FROM tbl_vente_article
    INNER JOIN tbl_stockm ON  tbl_vente_article.IDA = tbl_stockm.ID
  WHERE tbl_vente_article.IDV = $orderId";
 $orderItemResult = $connect->query($orderItemSql);
@@ -154,22 +154,21 @@ $orderItemResult = $connect->query($orderItemSql);
                   </tr>
                   <tr>
                      <td colspan="3" >&nbsp</td>
-                     <td rowspan="2" style="border-bottom: 1px solid black;width: 149px;background-color: black;color: white;padding-left: 5px;-webkit-print-color-adjust: exact;">&nbsp;</td>
-                     <td rowspan="2">&nbsp;
-                     </td>
+                     <td rowspan="2" >Total</td>
+                     <td rowspan="2"><b>'.$totalAmount.'$</b></td>
                   </tr>
                   <tr>
                      <td colspan="3">&nbsp</td>
                   </tr>
                   <tr>
                      <td colspan="3">&nbsp</td>
-                     <td style="border-bottom: 1px solid black;background-color: black;color: white;padding: 5px;-webkit-print-color-adjust: exact;"></td>
-                     <td>&nbsp;</td>
+                     <td>Reste</td>
+                     <td><b>'.$due.'$</b></td>
                   </tr>
                   <tr>
-                     <td colspan="3" style="border-bottom: 1px solid black;border-right: 1px solid;color: red;" >Signature et Cachet </td>
-                     <td style="border-bottom: 1px solid #fff;background-color: black;color: white;padding: 5px;-webkit-print-color-adjust: exact;">Total</td>
-                     <td style="border-bottom: 1px solid black;border-right: 1px solid;"><h3><b>'.$totalAmount.'Fc</b></h3></td>
+                     <td colspan="3" >Signature et Cachet </td>
+                     <td style=""><b>Payé</b></td>
+                     <td style=""><b>'.$paid.'$</b></td>
                   </tr>
                </tbody>
             </table>';

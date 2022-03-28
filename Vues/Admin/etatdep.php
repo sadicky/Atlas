@@ -312,7 +312,7 @@ header("location:index.php?page=login");
 							<div class="easypiechart" id="easypiechart-blue" data-percent="<?php echo $sum_today; ?>">
 							<span class="percent">
 								<?php if ($sum_today == "") {
-											echo "0";
+											echo "0$";
 											} else {
 											echo $sum_today.'$';
 										}
@@ -336,7 +336,7 @@ header("location:index.php?page=login");
 							<div class="easypiechart" id="easypiechart-orange" data-percent="<?=$sum_yesterday; ?>">
 							<span class="percent">
 								<?php if ($sum_yesterday == "") {
-											echo "0";
+											echo "0$";
 											} else {
 											echo $sum_yesterday.'$';
 										}
@@ -362,7 +362,7 @@ header("location:index.php?page=login");
 						<h4 align="center">Après 7 Jours</h4>
 							<div class="easypiechart" id="easypiechart-teal" data-percent="<?php echo $sum_weekly;?>"><span class="percent">
 								<?php if($sum_weekly==""){
-									echo "0";
+									echo "0$";
 									} else {
 									echo $sum_weekly,'$';
 									}
